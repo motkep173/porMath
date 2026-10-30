@@ -1,3 +1,5 @@
 exams/
 node_modules/
 __pycache__/
+tools/.booklet/
+tools/.review/

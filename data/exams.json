@@ -1,0 +1,190 @@
+[
+ {
+  "examId": "b571-2022-winter",
+  "category": "בגרות",
+  "questionnaire": "035571",
+  "units": 5,
+  "name": "בגרות 035571 – חורף תשפ״ב (2022)",
+  "year": "תשפ״ב",
+  "yearNum": 2022,
+  "season": "חורף",
+  "moed": "",
+  "files": [
+   "bagrut-571/2022-winter.pdf"
+  ],
+  "catalogNote": "יש גם גרסה מותאמת של עידו שבה שאלה 8 הוחלפה: own/2022-winter-q8-swapped.pdf"
+ },
+ {
+  "examId": "b571-2022-winter-nivtzarim",
+  "category": "בגרות",
+  "questionnaire": "035571",
+  "units": 5,
+  "name": "בגרות 035571 – חורף תשפ״ב (2022), מועד נבצרים",
+  "year": "תשפ״ב",
+  "yearNum": 2022,
+  "season": "חורף",
+  "moed": "נבצרים",
+  "files": [
+   "bagrut-571/2022-winter-nivtzarim.pdf"
+  ]
+ },
+ {
+  "examId": "b571-2022-summer-a",
+  "category": "בגרות",
+  "questionnaire": "035571",
+  "units": 5,
+  "name": "בגרות 035571 – קיץ תשפ״ב (2022), מועד א׳",
+  "year": "תשפ״ב",
+  "yearNum": 2022,
+  "season": "קיץ",
+  "moed": "א",
+  "files": [
+   "bagrut-571/2022-summer-a.pdf"
+  ]
+ },
+ {
+  "examId": "b571-2022-summer-b",
+  "category": "בגרות",
+  "questionnaire": "035571",
+  "units": 5,
+  "name": "בגרות 035571 – קיץ תשפ״ב (2022), מועד ב׳",
+  "year": "תשפ״ב",
+  "yearNum": 2022,
+  "season": "קיץ",
+  "moed": "ב",
+  "files": [
+   "bagrut-571/2022-summer-b.pdf"
+  ]
+ },
+ {
+  "examId": "b571-2023-winter",
+  "category": "בגרות",
+  "questionnaire": "035571",
+  "units": 5,
+  "name": "בגרות 035571 – חורף תשפ״ג (2023)",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "חורף",
+  "moed": "",
+  "files": [
+   "bagrut-571/2023-winter.pdf"
+  ]
+ },
+ {
+  "examId": "b571-2023-summer-a",
+  "category": "בגרות",
+  "questionnaire": "035571",
+  "units": 5,
+  "name": "בגרות 035571 – קיץ תשפ״ג (2023), מועד א׳",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "קיץ",
+  "moed": "א",
+  "files": [
+   "bagrut-571/2023-summer-a.pdf"
+  ],
+  "catalogNote": "יש גם גרסה מותאמת שבה שאלה 8 הוחלפה: own/2023-summer-a-q8-swapped.pdf"
+ },
+ {
+  "examId": "b571-2023-summer-special",
+  "category": "בגרות",
+  "questionnaire": "035571",
+  "units": 5,
+  "name": "בגרות 035571 – קיץ תשפ״ג (2023), מועד מיוחד",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "קיץ",
+  "moed": "מיוחד",
+  "files": [
+   "bagrut-571/2023-summer-special.pdf"
+  ]
+ },
+ {
+  "examId": "b571-2023-summer-b",
+  "category": "בגרות",
+  "questionnaire": "035571",
+  "units": 5,
+  "name": "בגרות 035571 – קיץ תשפ״ג (2023), מועד ב׳",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "קיץ",
+  "moed": "ב",
+  "files": [
+   "bagrut-571/2023-summer-b.pdf"
+  ],
+  "catalogNote": "יש גם גרסה מותאמת שבה שאלה 8 הוחלפה: own/2023-summer-b-q8-swapped.pdf"
+ },
+ {
+  "examId": "b571-2024-winter",
+  "category": "בגרות",
+  "questionnaire": "035571",
+  "units": 5,
+  "name": "בגרות 035571 – חורף תשפ״ד (2024)",
+  "year": "תשפ״ד",
+  "yearNum": 2024,
+  "season": "חורף",
+  "moed": "",
+  "files": [
+   "bagrut-571/2024-winter.pdf"
+  ]
+ },
+ {
+  "examId": "b571-2024-summer-a",
+  "category": "בגרות",
+  "questionnaire": "035571",
+  "units": 5,
+  "name": "בגרות 035571 – קיץ תשפ״ד (2024), מועד א׳",
+  "year": "תשפ״ד",
+  "yearNum": 2024,
+  "season": "קיץ",
+  "moed": "א",
+  "files": [
+   "bagrut-571/2024-summer-a.pdf"
+  ]
+ },
+ {
+  "examId": "b571-2024-summer-b",
+  "category": "בגרות",
+  "questionnaire": "035571",
+  "units": 5,
+  "name": "בגרות 035571 – קיץ תשפ״ד (2024), מועד ב׳",
+  "year": "תשפ״ד",
+  "yearNum": 2024,
+  "season": "קיץ",
+  "moed": "ב",
+  "files": [
+   "bagrut-571/2024-summer-b.pdf"
+  ]
+ },
+ {
+  "examId": "b571-2025-winter",
+  "category": "בגרות",
+  "questionnaire": "035571",
+  "units": 5,
+  "name": "בגרות 035571 – חורף תשפ״ה (2025)",
+  "year": "תשפ״ה",
+  "yearNum": 2025,
+  "season": "חורף",
+  "moed": "",
+  "files": [
+   "bagrut-571/2025-winter.pdf"
+  ]
+ },
+ {
+  "examId": "own-571-swap-q8",
+  "category": "מבחנים שלי",
+  "questionnaire": "035571",
+  "units": 5,
+  "name": "שאלות חלופיות לשאלה 8 – שאלון 035571",
+  "year": "",
+  "yearNum": 2025,
+  "season": "",
+  "moed": "",
+  "files": [
+   "own/2022-winter-q8-swapped.pdf",
+   "own/2023-summer-a-q8-swapped.pdf",
+   "own/2023-summer-b-q8-swapped.pdf"
+  ],
+  "catalogNote": "שאלה 8 בשלושה מבחנים הוחלפה בשאלה אחרת (קבצים 'אחרי החלפה' בתיקייה יא 5). כאן רק השאלות החלופיות."
+ }
+]

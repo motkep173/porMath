@@ -1,0 +1,880 @@
+<title>מאגר הבחינות · {{COURSE_NAME}}</title>
+<meta name="description" content="שאלות ממבחני עבר ב{{COURSE_NAME}} ({{COURSE_NUMBER}}), {{ORG_LINE}}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700&display=swap">
+<style>
+/* Layout: one narrow reading column; topic map as the home view, exam-sheet cards once a topic is chosen */
+:root {
+  --paper: #f6f8fb;
+  --sheet: #ffffff;
+  --ink: #1b2433;
+  --muted: #5b6678;
+  --line: #d9dfe8;
+  --accent: #2348a8;
+  --accent-soft: #e6ecfa;
+  --answer: #eef6f0;
+  --answer-ink: #1e6b3a;
+  --warn: #fbf3e2;
+  --warn-ink: #8a5a00;
+  --solution: #fdf6dc;
+  --solution-line: #eadcaa;
+  --grid: rgba(35, 72, 168, 0.06);
+  /* Brand colour (default orange; set it to the institution's colour here and in both dark-mode blocks):
+     --brand is dark enough for text on white, --brand-bright is for fills */
+  --brand: #b85400;
+  --brand-bright: #f39200;
+  --brand-soft: #fff1e0;
+  --font-body: "Assistant", "Arial Hebrew", "Segoe UI", Arial, sans-serif;
+  --step--1: 0.8125rem;
+  --step-0: 1rem;
+  --step-1: 1.1875rem;
+  --step-2: 1.6rem;
+  --step-3: 2.2rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --paper: #12161e;
+    --sheet: #1a202b;
+    --ink: #e4e9f1;
+    --muted: #9aa5b8;
+    --line: #2d3545;
+    --accent: #8eaaf5;
+    --accent-soft: #232e48;
+    --answer: #17291f;
+    --answer-ink: #8fd6a6;
+    --warn: #2c2414;
+    --warn-ink: #e5bf6e;
+    --solution: #26221a;
+    --solution-line: #423a26;
+    --grid: rgba(142, 170, 245, 0.06);
+    --brand: #ffb162;
+    --brand-bright: #f39200;
+    --brand-soft: #33251a;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #12161e;
+  --sheet: #1a202b;
+  --ink: #e4e9f1;
+  --muted: #9aa5b8;
+  --line: #2d3545;
+  --accent: #8eaaf5;
+  --accent-soft: #232e48;
+  --answer: #17291f;
+  --answer-ink: #8fd6a6;
+  --warn: #2c2414;
+  --warn-ink: #e5bf6e;
+  --solution: #26221a;
+  --solution-line: #423a26;
+  --grid: rgba(142, 170, 245, 0.06);
+  --brand: #ffb162;
+  --brand-bright: #f39200;
+  --brand-soft: #33251a;
+}
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: var(--step-0);
+  line-height: 1.65;
+  padding: 0 16px;
+}
+.wrap { max-width: 780px; margin: 0 auto; padding-block: 20px 96px; display: grid; gap: 24px; }
+
+/* Top bar: logo, title and course details as one compact unit; the logo sits on white in both themes,
+   since its lettering is dark gray */
+.topbar {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 12px 18px;
+  background: var(--sheet); border: 1px solid var(--line); border-bottom: 3px solid var(--brand-bright); border-radius: 12px;
+}
+.org-name { font-size: var(--step-1); font-weight: 700; }
+.logo { display: block; height: 46px; width: auto; background: #fff; border-radius: 6px; padding: 3px 6px; box-sizing: content-box; }
+.titles { display: grid; gap: 1px; padding-inline-start: 16px; border-inline-start: 1px solid var(--line); min-width: 0; }
+h1 { font-size: var(--step-2); line-height: 1.2; margin: 0; }
+.course { font-size: var(--step--1); color: var(--muted); }
+.course b { color: var(--brand); font-weight: 700; }
+.topbar .stats { margin-inline-start: auto; flex-direction: column; align-items: end; gap: 0; }
+.intro { display: grid; gap: 4px; }
+.lead { margin: 0; color: var(--muted); }
+.stats { display: flex; flex-wrap: wrap; gap: 0 14px; font-size: var(--step--1); color: var(--muted); }
+.stats strong { color: var(--ink); font-variant-numeric: tabular-nums; }
+
+/* Layout: on wide screens a sticky sidebar (search, filters, tools) beside the content; stacked on narrow ones */
+.layout { display: grid; gap: 16px; }
+.side, .content { display: grid; gap: 16px; align-content: start; min-width: 0; }
+@media (min-width: 1100px) {
+  .wrap { max-width: 1160px; }
+  .layout { grid-template-columns: 290px minmax(0, 1fr); gap: 28px; align-items: start; }
+  .side {
+    position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: hidden auto; gap: 12px;
+    padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--sheet);
+  }
+  .side .filters { background: var(--paper); }
+  .side .filters-body { grid-template-columns: 1fr; }
+  .side .filters summary { flex-wrap: wrap; gap: 6px 8px; padding-inline: 12px; }
+  .side .actions { flex-direction: column; }
+  .side .actions .btn { text-align: center; }
+  .side .search input { background: var(--paper); }
+  /* The student can hide the sidebar; the content then takes the full width */
+  .side .side-toggle { display: flex; }
+  .wrap.side-hidden .layout { grid-template-columns: minmax(0, 1fr); }
+  .wrap.side-hidden .side { display: none; }
+  .wrap.side-hidden .btn.show-side { display: inline-flex; }
+}
+.side-toggle {
+  display: none; align-items: center; gap: 6px; justify-self: end; border: 0; background: transparent; cursor: pointer;
+  font-size: var(--step--1); font-weight: 600; color: var(--muted); padding: 0 2px;
+}
+.side-toggle:hover { color: var(--brand); }
+.side-toggle svg, .show-side svg { width: 16px; height: 16px; }
+.btn.show-side {
+  display: none; position: fixed; inset-block-end: 20px; inset-inline-start: 20px; z-index: 10; align-items: center; gap: 8px;
+  border-radius: 999px; padding: 10px 18px; background: var(--sheet); border-color: var(--accent); color: var(--accent);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+
+/* Free-text search over question text, options, topic and subtopic */
+.search { position: relative; }
+.search input {
+  width: 100%; font: inherit; color: inherit; padding: 10px 40px 10px 14px; border: 1px solid var(--line);
+  border-radius: 10px; background: var(--sheet);
+}
+.search input:focus { outline: 2px solid var(--brand-bright); outline-offset: 0; border-color: transparent; }
+.search svg { position: absolute; inset-inline-start: 13px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--muted); pointer-events: none; }
+
+/* Filters: a collapsible panel; the summary line says how many filters are on */
+.filters { border: 1px solid var(--line); border-radius: 10px; background: var(--sheet); }
+.filters summary {
+  display: flex; align-items: center; gap: 10px; padding: 10px 16px; cursor: pointer;
+  font-weight: 700; list-style: none; user-select: none;
+}
+.sum-title { white-space: nowrap; }
+.filters summary::-webkit-details-marker { display: none; }
+.filters summary::before {
+  content: ""; width: 7px; height: 7px; border: solid var(--muted); border-width: 0 0 2px 2px;
+  transform: rotate(45deg); transition: transform 0.15s; margin-top: -3px;
+}
+.filters[open] summary::before { transform: rotate(-45deg); margin-top: 3px; }
+.filters summary:hover { color: var(--accent); }
+.active-count, .filters .btn { white-space: nowrap; }
+.active-count { font-size: var(--step--1); font-weight: 600; color: var(--accent); background: var(--accent-soft); border-radius: 999px; padding: 1px 10px; }
+.active-count:empty { display: none; }
+.filters-body {
+  display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px 12px; align-items: end;
+  padding: 4px 16px 14px; border-top: 1px solid var(--line); padding-top: 12px;
+}
+.field { display: grid; gap: 2px; min-width: 0; }
+.field label { font-size: var(--step--1); font-weight: 600; color: var(--muted); }
+.filters select { padding: 5px 8px; width: 100%; }
+.filters .btn { padding: 3px 12px; margin-inline-start: auto; font-size: var(--step--1); }
+select, button { font: inherit; color: inherit; }
+select { padding: 8px 10px; border: 1px solid var(--line); border-radius: 6px; background: var(--paper); }
+select:disabled { opacity: 0.55; }
+.btn { border: 1px solid var(--line); background: transparent; border-radius: 6px; padding: 8px 14px; cursor: pointer; font-weight: 600; }
+.btn:hover { background: var(--accent-soft); }
+.download { color: var(--accent); border-color: var(--accent); text-decoration: none; }
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.random-btn { background: var(--brand-bright); border-color: var(--brand-bright); color: #1b1200; }
+.random-btn:hover { background: var(--brand-bright); filter: brightness(1.08); }
+.how { font-size: var(--step--1); color: var(--muted); }
+.how summary { cursor: pointer; color: var(--accent); font-weight: 600; width: fit-content; }
+.how ul { margin: 6px 0 0; padding-inline-start: 20px; display: grid; gap: 4px; }
+/* Names of buttons inside the explanation, drawn as small framed labels */
+.key { display: inline-block; padding: 0 7px; border: 1px solid var(--line); border-radius: 5px; background: var(--sheet); color: var(--ink); font-weight: 600; line-height: 1.5; white-space: nowrap; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.status { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 8px; font-size: var(--step--1); color: var(--muted); }
+.status strong { color: var(--ink); font-variant-numeric: tabular-nums; }
+
+/* Floating "back to home" button, shown whenever a list of questions replaces the topic map */
+.home-btn {
+  position: fixed; inset-block-end: 20px; inset-inline-end: 20px; z-index: 10;
+  background: var(--accent); color: var(--paper); border-color: var(--accent); border-radius: 999px;
+  padding: 10px 18px; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+}
+.home-btn:hover { background: var(--accent); filter: brightness(1.1); }
+@media (max-width: 480px) { .home-btn { inset-block-end: 14px; inset-inline-end: 14px; padding: 8px 14px; } }
+
+/* Topic map (home view): compact cards, two columns where there is room */
+.map { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); align-items: start; }
+.topic {
+  background: var(--sheet); border: 1px solid var(--line); border-inline-start: 4px solid var(--brand-bright);
+  border-radius: 10px; padding: 10px 14px 12px; display: grid; gap: 8px;
+}
+.topic-head { display: flex; align-items: center; gap: 10px; }
+.sym {
+  flex: none; width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
+  background: var(--brand-soft); color: var(--brand); font: italic 700 15px/1 "Times New Roman", serif; direction: ltr; white-space: nowrap;
+}
+.topic-title { display: grid; gap: 2px; flex: 1; min-width: 0; }
+.topic-head button { all: unset; cursor: pointer; font-size: var(--step-0); font-weight: 700; line-height: 1.3; }
+.topic-head button:hover { color: var(--brand); }
+.topic-head button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.topic-meta { font-size: var(--step--1); color: var(--muted); font-variant-numeric: tabular-nums; }
+.progress { height: 4px; border-radius: 2px; background: var(--line); overflow: hidden; }
+.progress i { display: block; height: 100%; background: var(--brand-bright); }
+.subs { display: flex; flex-wrap: wrap; gap: 6px; }
+.sub-link {
+  display: inline-flex; gap: 6px; align-items: baseline; border: 1px solid var(--line); border-radius: 999px;
+  padding: 1px 10px; background: var(--paper); cursor: pointer; font-size: var(--step--1); line-height: 1.6;
+}
+.sub-link:hover { border-color: var(--brand); color: var(--brand); }
+.sub-link b { font-weight: 700; color: var(--brand); font-variant-numeric: tabular-nums; }
+.sub-link[disabled] { opacity: 0.5; cursor: default; }
+.sub-link.all-done { border-color: var(--brand-bright); }
+
+/* Quick links to the latest exams, above the topic map */
+.recent { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: var(--step--1); margin-bottom: 4px; }
+.exam-tip { margin: 0 0 6px; font-size: var(--step--1); color: var(--muted); }
+.link-btn { all: unset; cursor: pointer; color: var(--accent); font-weight: 600; text-decoration: underline; text-underline-offset: 2px; }
+.link-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.recent span { font-weight: 700; color: var(--muted); margin-inline-end: 4px; }
+.recent button { font-size: var(--step--1); padding: 2px 12px; border-radius: 999px; }
+.recent button:hover { border-color: var(--brand); color: var(--brand); background: var(--brand-soft); }
+
+/* Random-question view */
+.random-view { display: grid; gap: 12px; }
+.random-view > .btn { justify-self: center; }
+
+/* Question cards */
+.list { display: grid; gap: 18px; }
+.q {
+  background: var(--sheet); border: 1px solid var(--line); border-radius: 10px;
+  padding: 20px 22px; display: grid; gap: 14px;
+  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 22px 22px;
+}
+.meta { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; font-size: var(--step--1); }
+.chip { padding: 1px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-weight: 600; }
+.chip.sub { background: transparent; border: 1px solid var(--line); color: var(--muted); }
+.source { font-size: var(--step-1); font-weight: 700; margin: 0; }
+.source small { font-size: var(--step--1); font-weight: 600; color: var(--muted); margin-inline-start: 8px; }
+.also { margin: -8px 0 0; font-size: var(--step--1); color: var(--muted); }
+.q-text { overflow-wrap: anywhere; }
+.q-text p { margin: 0 0 0.5em; }
+.q img { max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; background: #fff; justify-self: start; }
+.options { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.options li { display: flex; gap: 10px; align-items: baseline; padding: 4px 10px; border-radius: 6px; border: 1px solid transparent; }
+.options li .letter { font-weight: 700; color: var(--muted); min-width: 1.2em; }
+.options li.correct { background: var(--answer); color: var(--answer-ink); border-color: currentColor; }
+.options li.correct .letter { color: inherit; }
+.note { font-size: var(--step--1); color: var(--muted); }
+/* Parts of a question outside the current syllabus */
+.off-note { font-size: var(--step--1); color: var(--warn-ink); background: var(--warn); border-radius: 6px; padding: 6px 10px; }
+.off-syllabus { font-size: var(--step--1); font-weight: 600; color: var(--warn-ink); }
+
+.toggle {
+  justify-self: start; border: 1px solid var(--accent); color: var(--accent); background: transparent;
+  border-radius: 6px; padding: 6px 14px; cursor: pointer; font-weight: 700;
+}
+.toggle:hover { background: var(--accent-soft); }
+.toggle[aria-expanded="true"] { background: var(--accent); color: var(--sheet); }
+.btn-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.solved-btn { margin-inline-start: auto; border: 1px solid var(--line); border-radius: 999px; background: transparent; padding: 4px 12px; cursor: pointer; font-size: var(--step--1); color: var(--muted); font-weight: 600; }
+.solved-btn:hover { border-color: var(--brand); color: var(--brand); }
+.solved-btn[aria-pressed="true"] { background: var(--brand-soft); border-color: var(--brand-bright); color: var(--brand); }
+.q.is-solved { border-inline-start: 4px solid var(--brand-bright); }
+.hint-btn { border-style: dashed; }
+.hint { background: var(--accent-soft); border-radius: 8px; padding: 10px 14px; }
+.hint b { color: var(--accent); margin-inline-end: 4px; }
+.toggle:disabled { border-color: var(--line); color: var(--muted); cursor: default; background: transparent; }
+
+/* Solutions sit on a soft yellow panel, set apart from the question */
+.solution { background: var(--solution); border: 1px solid var(--solution-line); border-radius: 8px; padding: 14px 16px; display: grid; gap: 12px; }
+.sol-head { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.sol-head h3 { margin: 0; font-size: var(--step--1); letter-spacing: 0.06em; color: var(--muted); }
+.badge { font-size: var(--step--1); font-weight: 700; padding: 1px 10px; border-radius: 999px; }
+.badge.official { background: var(--answer); color: var(--answer-ink); }
+.badge.unofficial { background: var(--warn); color: var(--warn-ink); border: 1px solid var(--solution-line); }
+.solution ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+.answer { background: var(--answer); color: var(--answer-ink); border-radius: 6px; padding: 10px 14px; font-weight: 600; }
+.answer span { font-weight: 700; margin-inline-end: 6px; }
+
+.next { justify-self: start; }
+.more { justify-self: center; }
+.exam-head { font-size: var(--step-2); margin: 12px 0 0; padding-bottom: 6px; border-bottom: 2px solid var(--brand-bright); }
+.exam-head:first-child { margin-top: 0; }
+.empty { text-align: center; color: var(--muted); padding: 32px 0; }
+footer { font-size: var(--step--1); color: var(--muted); border-top: 1px solid var(--line); padding-top: 14px; display: grid; gap: 6px; }
+
+mjx-container { direction: ltr; }
+mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width: 100%; }
+@media (max-width: 480px) { .solution mjx-container[display="true"] { font-size: 88%; } }
+
+@media (max-width: 480px) {
+  .wrap { padding-block-start: 12px; gap: 18px; }
+  .topbar { padding: 10px 12px; gap: 8px 12px; }
+  .logo { height: 34px; }
+  .titles { padding-inline-start: 0; border: 0; flex-basis: 100%; }
+  h1 { font-size: var(--step-1); }
+  .topbar .stats { margin: 0; flex-direction: row; flex-basis: 100%; align-items: baseline; gap: 0 12px; padding-top: 6px; border-top: 1px solid var(--line); }
+  .map { grid-template-columns: 1fr; }
+  .q { padding: 16px; }
+  .filters-body { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hint:not([hidden]), .solution:not([hidden]), .stepwise li:not([hidden]), .stepwise .answer:not([hidden]) { animation: open 0.2s ease-out; }
+  @keyframes open { from { opacity: 0.4; transform: translateY(-3px); } to { opacity: 1; transform: none; } }
+}
+</style>
+
+<div class="wrap" dir="rtl" lang="he">
+  <header class="topbar">
+    {{BRAND}}
+    <div class="titles">
+      <h1>מאגר מבחנים במתמטיקה</h1>
+      <div class="course"><b>{{COURSE_NAME}}</b>{{UNIT_SUFFIX}}</div>
+    </div>
+    <div class="stats" id="stats"></div>
+  </header>
+
+  <div class="intro">
+    <p class="lead">באתר מרוכזים מבחני בגרות, מבחנים מבתי ספר ומבחנים שלנו. אפשר לפתוח מבחן שלם לפי השם שלו, או לתרגל את כל השאלות בנושא מסוים.</p>
+    <details class="how">
+      <summary>איך זה עובד?</summary>
+      <ul>
+        <li>לחיצה על נושא או על תת־נושא מציגה את כל השאלות עליו, מכל המבחנים.</li>
+        <li>נסו לפתור לבד, ורק אז לחצו על <span class="key">הצג פתרון</span>. הפתרון נפתח שורה אחר שורה, כדי שתוכלו לנסות להמשיך לבד אחרי כל שלב. בחלק מהשאלות יש גם <span class="key">קבלת רמז</span>.</li>
+        <li><span class="key">סימנתי כפתורה</span> שומר את ההתקדמות שלכם בדפדפן הזה, והיא מוצגת בכל נושא. במחשב או בטלפון אחר ההתקדמות לא מופיעה.</li>
+        <li>כדי לפתוח מבחן שלם, בחרו אותו ברשימה <span class="key">מבחן</span> ב<span class="key">סינון שאלות</span>, או לחצו על אחד המבחנים האחרונים בעמוד הראשי.</li>
+      </ul>
+    </details>
+  </div>
+
+  <div class="layout">
+  <aside class="side" id="side" aria-label="חיפוש, סינון וכלים">
+  <button class="side-toggle" id="hide-side" type="button" aria-controls="side" aria-expanded="true">
+    הסתרת הסרגל
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg>
+  </button>
+  <div class="search" role="search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input type="search" id="search" placeholder="חיפוש בשאלות, למשל: סדרה הנדסית" aria-label="חיפוש חופשי בשאלות" autocomplete="off">
+  </div>
+
+  <div class="actions">
+      <button class="btn random-btn" id="random" type="button">שאלה אקראית</button>
+      <a class="btn download" href="booklet.pdf" download="{{BOOKLET_TITLE}}.pdf">הורדת חוברת המבחנים (PDF)</a>
+    </div>
+
+  <details class="filters" id="filters">
+    <summary><span class="sum-title">סינון שאלות</span> <span class="active-count" id="active-count"></span>
+      <button class="btn" id="clear" type="button" hidden>ניקוי סינון</button></summary>
+    <div class="filters-body">
+    <div class="field">
+      <label for="topic">בחרו נושא</label>
+      <select id="topic"></select>
+    </div>
+    <div class="field">
+      <label for="sub">בחרו תת־נושא</label>
+      <select id="sub" disabled></select>
+    </div>
+    <div class="field">
+      <label for="qtype">סוג שאלה</label>
+      <select id="qtype">
+        <option value="">כל השאלות</option>
+        <option value="mc">שאלות אמריקאיות</option>
+        <option value="open">שאלות פתוחות</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="year">שנה</label>
+      <select id="year"></select>
+    </div>
+    <div class="field">
+      <label for="category">סוג מבחן</label>
+      <select id="category">
+        <option value="">כל סוגי המבחנים</option>
+        <option value="בגרות">בגרויות</option>
+        <option value="בית ספר">מבחנים מבתי ספר</option>
+        <option value="מבחנים שלי">המבחנים שלנו</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="exam">מבחן</label>
+      <select id="exam"></select>
+    </div>
+    </div>
+  </details>
+
+  </aside>
+
+  <div class="content">
+  <div class="status">
+    <div id="count"></div>
+    <div id="order-note"></div>
+  </div>
+
+  <main id="main" aria-live="polite"></main>
+  </div>
+  </div>
+
+  <button class="btn show-side" id="show-side" type="button" aria-controls="side" aria-expanded="false">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    חיפוש וסינון
+  </button>
+
+  <button class="btn home-btn" id="home" type="button" hidden>חזרה לעמוד הראשי</button>
+
+  <footer>
+    <div>„פתרון רשמי” נלקח מקובץ פתרונות רשמי. „פתרון שלא נבדק על ידי מורה” נכתב בנפרד ועשוי להכיל טעויות.</div>
+    <div id="footer-stats"></div>
+    <div>{{ORG_LINE}}</div>
+  </footer>
+</div>
+
+<script type="application/json" id="data">/*__DATA__*/</script>
+<script>
+window.MathJax = {
+  tex: { inlineMath: [["\\(", "\\)"]], displayMath: [["\\[", "\\]"]] },
+  svg: { fontCache: "global" },
+  startup: {
+    typeset: false,
+    ready() {
+      MathJax.startup.defaultReady();
+      MathJax.startup.promise.then(() => typeset(document.getElementById("main")));
+    }
+  }
+};
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg-full.js" async></script>
+<script>
+const DATA = JSON.parse(document.getElementById("data").textContent);
+const EXAMS = Object.fromEntries(DATA.exams.map(e => [e.examId, e]));
+const QUESTIONS = DATA.questions;
+const TOPICS = DATA.taxonomy.topics;
+const LETTERS = ["א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט", "י"];
+const PAGE = 15;
+
+const topicSel = document.getElementById("topic");
+const subSel = document.getElementById("sub");
+const examSel = document.getElementById("exam");
+const yearSel = document.getElementById("year");
+const catSel = document.getElementById("category");
+const typeSel = document.getElementById("qtype");
+const main = document.getElementById("main");
+const searchInput = document.getElementById("search");
+
+// Search text per question: tags stripped, lower case, Hebrew geresh/gershayim folded to ASCII quotes.
+const fold = t => t.toLowerCase().replace(/[״“”]/g, '"').replace(/[׳‘’]/g, "'").replace(/\s+/g, " ");
+const searchText = new Map(DATA.questions.map(q => [q, fold(
+  [q.text, ...(q.options || []), q.topic, q.sub].join(" ").replace(/<[^>]*>/g, " "))]));
+// Every word of the query must appear somewhere in the question.
+function matchesSearch(q, words) { const t = searchText.get(q); return words.every(w => t.includes(w)); }
+
+// Questions the student marked as solved; kept in this browser only. Storage may be unavailable (private mode).
+const SOLVED_KEY = "examsbank-{{COURSE_NUMBER}}-solved";
+const solved = new Set((() => { try { return JSON.parse(localStorage.getItem(SOLVED_KEY)) || []; } catch { return []; } })());
+function setSolved(id, on) {
+  on ? solved.add(id) : solved.delete(id);
+  try { localStorage.setItem(SOLVED_KEY, JSON.stringify([...solved])); } catch {}
+}
+
+// Each topic may set a short symbol in taxonomy.json ("symbol": "∫"); otherwise its first letter is shown.
+const count = document.getElementById("count");
+const statusBar = document.querySelector(".status");
+
+function typeset(el) {
+  if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([el]).catch(() => {});
+}
+function el(tag, cls, html) {
+  const e = document.createElement(tag);
+  if (cls) e.className = cls;
+  if (html !== undefined) e.innerHTML = html;
+  return e;
+}
+function escapeHtml(t) {
+  return t.replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[ch]));
+}
+function option(value, label) {
+  const o = document.createElement("option");
+  o.value = value; o.textContent = label;
+  return o;
+}
+// A question merged from several exams has one appearance per exam; it passes the exam filters if any appearance does.
+const appearances = q => [{ examId: q.examId, number: q.number, points: q.points }, ...(q.alsoIn || [])];
+function examLabel(ex) { return ex.name; }
+
+// Order: syllabus order of topic/sub, then newest exam first, then question number.
+const subOrder = {};
+TOPICS.forEach((t, i) => t.subs.forEach((s, j) => { subOrder[t.name + "|" + s] = i * 100 + j; }));
+const examRank = e => e.yearNum * 100 + ({ "חורף": 10, "אביב": 30, "קיץ": 50 }[e.season] || 0) +
+  ({ "נבצרים": 1, "א": 2, "ב": 3, "ג": 4, "מיוחד": 5 }[e.moed] || 0) - (e.category === "מבחנים שלי" ? 99 : 0);
+QUESTIONS.sort((a, b) =>
+  (subOrder[a.topic + "|" + a.sub] - subOrder[b.topic + "|" + b.sub]) ||
+  (examRank(EXAMS[b.examId]) - examRank(EXAMS[a.examId])) ||
+  a.number.localeCompare(b.number, "he", { numeric: true }));
+
+// Header stats
+const nOfficial = QUESTIONS.filter(q => q.solution && q.solution.official).length;
+const nSolved = QUESTIONS.filter(q => q.solution).length;
+const years = DATA.exams.map(e => e.yearNum);
+document.getElementById("stats").innerHTML =
+  `<span><strong>${QUESTIONS.length}</strong> שאלות</span>` +
+  `<span>מתוך <strong>${DATA.exams.length}</strong> מבחנים</span>` +
+  `<span>משנת <strong>${Math.min(...years)}</strong> עד <strong>${Math.max(...years)}</strong></span>`;
+document.getElementById("footer-stats").textContent =
+  `לכל ${nSolved} מתוך ${QUESTIONS.length} השאלות יש פתרון. ${nOfficial} מהפתרונות רשמיים.`;
+
+topicSel.append(option("", "כל הנושאים"), ...TOPICS.map(t => option(t.name, t.name)));
+function fillSubs() {
+  const t = TOPICS.find(t => t.name === topicSel.value);
+  subSel.replaceChildren(option("", "כל תתי־הנושאים"), ...(t ? t.subs.map(s => option(s, s)) : []));
+  subSel.disabled = !t;
+}
+
+yearSel.append(option("", "כל השנים"), ...[...new Set(years)].sort((a, b) => b - a)
+  .map(y => option(y, [DATA.exams.find(e => e.yearNum === y && e.year)?.year, `(${y})`].filter(Boolean).join(" "))));
+
+// The exam list follows the chosen type of exam; newest first.
+function fillExams() {
+  const keep = examSel.value;
+  const list = DATA.exams.filter(e => !catSel.value || e.category === catSel.value)
+    .sort((x, y) => examRank(y) - examRank(x));
+  examSel.replaceChildren(option("", "כל המבחנים"), ...list.map(e => option(e.examId, e.name)));
+  examSel.value = list.some(e => e.examId === keep) ? keep : "";
+}
+fillExams();
+
+function examOk(id) {
+  const e = EXAMS[id];
+  return (!yearSel.value || e.yearNum === +yearSel.value) && (!catSel.value || e.category === catSel.value) &&
+    (!examSel.value || id === examSel.value);
+}
+// The appearance that matches the exam filters, or undefined.
+const matchOf = q => appearances(q).find(a => examOk(a.examId));
+function kindFilter(q) {
+  return (!typeSel.value || q.type === typeSel.value) && !!matchOf(q);
+}
+
+function renderMap() {
+  const pool = QUESTIONS.filter(kindFilter);
+  const view = [];
+  // How to reach a whole exam: the exam list in the filters, or one of the latest exams right here.
+  const tip = el("p", "exam-tip", "רוצים לראות מבחן שלם ספציפי? היעזרו ");
+  const toFilters = el("button", "link-btn", "ברשימת המבחנים בסינון");
+  toFilters.type = "button";
+  toFilters.addEventListener("click", () => {
+    const f = document.getElementById("filters");
+    f.open = true; f.scrollIntoView({ behavior: "smooth", block: "nearest" }); examSel.focus();
+  });
+  tip.append(toFilters, ".");
+  view.push(tip);
+  // Quick links to the latest exams (not our own collections): each one selects that exam.
+  const recent = DATA.exams.filter(e => e.category !== "מבחנים שלי")
+    .sort((x, y) => examRank(y) - examRank(x)).slice(0, 4);
+  if (recent.length) {
+    const row = el("div", "recent", "<span>מבחנים אחרונים:</span>");
+    recent.forEach(e => {
+      const b = el("button", "btn", examLabel(e));
+      b.type = "button";
+      b.addEventListener("click", () => {
+        yearSel.value = ""; catSel.value = ""; fillExams(); examSel.value = e.examId; render();
+        main.scrollIntoView({ behavior: "smooth" });
+      });
+      row.append(b);
+    });
+    view.push(row);
+  }
+  const map = el("div", "map");
+  TOPICS.forEach(t => {
+    const inTopic = pool.filter(q => q.topic === t.name);
+    if (!inTopic.length) return;
+    const nDone = inTopic.filter(q => solved.has(q.id)).length;
+    const box = el("section", "topic");
+    const head = el("div", "topic-head");
+    const title = el("div", "topic-title");
+    const tb = el("button");
+    tb.type = "button"; tb.textContent = t.name;
+    tb.addEventListener("click", () => { topicSel.value = t.name; fillSubs(); render(); });
+    title.append(tb, el("span", "topic-meta", nDone
+      ? `${inTopic.length} שאלות · פתרתם ${nDone}` : `${inTopic.length} שאלות`));
+    head.append(el("span", "sym", `<span>${t.symbol || t.name[0]}</span>`), title);
+    box.append(head);
+    if (nDone) {
+      const bar = el("div", "progress");
+      bar.append(el("i"));
+      bar.firstChild.style.width = `${Math.round(100 * nDone / inTopic.length)}%`;
+      bar.title = `פתרתם ${nDone} מתוך ${inTopic.length}`;
+      box.append(bar);
+    }
+    const subs = el("div", "subs");
+    t.subs.forEach(s => {
+      const inSub = inTopic.filter(q => q.sub === s), n = inSub.length;
+      const b = el("button", "sub-link", `${s} <b>${n}</b>`);
+      b.type = "button";
+      if (!n) b.disabled = true;
+      else if (inSub.every(q => solved.has(q.id))) { b.classList.add("all-done"); b.title = "פתרתם את כל השאלות"; }
+      b.addEventListener("click", () => { topicSel.value = t.name; fillSubs(); subSel.value = s; render(); });
+      subs.append(b);
+    });
+    box.append(subs);
+    map.append(box);
+  });
+  view.push(map);
+  main.replaceChildren(...view);
+}
+
+// One random question, preferring ones not yet marked solved; respects the topic and type filters.
+function showRandom() {
+  const topic = topicSel.value, sub = subSel.value;
+  const pool = QUESTIONS.filter(q => (!topic || q.topic === topic) && (!sub || q.sub === sub) && kindFilter(q));
+  if (!pool.length) return;
+  const fresh = pool.filter(q => !solved.has(q.id));
+  const from = fresh.length ? fresh : pool;
+  const q = from[Math.floor(Math.random() * from.length)];
+  count.innerHTML = `שאלה אקראית מתוך <strong>${pool.length}</strong>` + (topic ? ` בנושא ${sub || topic}` : "");
+  document.getElementById("order-note").textContent = "";
+  homeBtn.hidden = false;
+  statusBar.hidden = false;
+  const view = el("div", "random-view");
+  const again = el("button", "btn random-btn", "שאלה אקראית נוספת");
+  again.type = "button";
+  again.addEventListener("click", showRandom);
+  const c = card(q, matchOf(q));
+  view.append(c, again);
+  main.replaceChildren(view);
+  typeset(c);
+  main.scrollIntoView({ behavior: "smooth" });
+}
+
+// `at` is the appearance shown in the card's heading (another exam the question appeared in, in the exam view).
+function card(q, at = appearances(q)[0]) {
+  const ex = EXAMS[at.examId];
+  const others = appearances(q).filter(a => a.examId !== at.examId);
+  const c = el("article", "q");
+  const meta = el("div", "meta");
+  meta.append(el("span", "chip", q.topic), el("span", "chip sub", q.sub));
+  c.append(meta);
+  const pts = at.points ? ` · ${at.points} נק׳` : "";
+  c.append(el("h2", "source", `${examLabel(ex)}<small>שאלה ${at.number}${pts}</small>`));
+  if (others.length) c.append(el("p", "also", "השאלה הופיעה גם ב: " +
+    others.map(r => `${examLabel(EXAMS[r.examId])} (שאלה ${r.number})`).join("; ")));
+  c.append(el("div", "q-text", q.text));
+  if (q.image) {
+    const img = el("img");
+    img.src = DATA.images[q.image]; img.alt = "איור מתוך השאלה"; img.loading = "lazy";
+    c.append(img);
+  }
+  let opts = null;
+  if (q.type === "mc") {
+    opts = el("ol", "options");
+    q.options.forEach((o, i) => {
+      const li = el("li");
+      li.append(el("span", "letter", LETTERS[i] + "."), el("span", "", o));
+      opts.append(li);
+    });
+    c.append(opts);
+  }
+  if (q.offSyllabus) c.append(el("div", "off-note", q.offSyllabus.note));
+  if (q.notes) c.append(el("div", "note", q.notes));
+
+  // A hint (optional) comes before the solution: its button sits first in the row.
+  const row = el("div", "btn-row");
+  let hintBox = null;
+  if (q.hint) {
+    const hb = el("button", "toggle hint-btn");
+    hb.type = "button"; hb.textContent = "קבלת רמז";
+    hb.setAttribute("aria-expanded", "false");
+    hintBox = el("div", "hint", `<b>רמז:</b> ${q.hint}`);
+    hintBox.hidden = true;
+    let typeset1 = false;
+    hb.addEventListener("click", () => {
+      const open = hintBox.hidden;
+      hintBox.hidden = !open;
+      hb.setAttribute("aria-expanded", String(open));
+      hb.textContent = open ? "הסתר רמז" : "קבלת רמז";
+      if (open && !typeset1) { typeset1 = true; typeset(hintBox); }
+    });
+    row.append(hb);
+  }
+  const btn = el("button", "toggle");
+  btn.type = "button";
+  row.append(btn);
+  const sv = el("button", "solved-btn");
+  sv.type = "button";
+  const paint = () => {
+    const on = solved.has(q.id);
+    sv.setAttribute("aria-pressed", String(on));
+    sv.textContent = on ? "✓ פתרתי" : "סימנתי כפתורה";
+    c.classList.toggle("is-solved", on);
+  };
+  sv.addEventListener("click", () => { setSolved(q.id, !solved.has(q.id)); paint(); });
+  paint();
+  row.append(sv);
+  if (!q.solution) {
+    btn.textContent = "אין עדיין פתרון לשאלה זו";
+    btn.disabled = true;
+    c.append(row);
+    if (hintBox) c.append(hintBox);
+    return c;
+  }
+  const sid = "sol-" + q.id;
+  btn.textContent = "הצג פתרון";
+  btn.setAttribute("aria-expanded", "false");
+  btn.setAttribute("aria-controls", sid);
+  const sol = el("section", "solution");
+  sol.id = sid; sol.hidden = true;
+  const s = q.solution;
+  sol.append(el("div", "sol-head", `<h3>פתרון</h3>` + (s.official
+    ? `<span class="badge official">פתרון רשמי</span>`
+    : s.reviewed ? `<span class="badge official">נבדק על ידי מורה</span>`
+    : `<span class="badge unofficial">פתרון שלא נבדק על ידי מורה</span>`)));
+  const steps = el("ol", "", s.steps.map(x => `<li>${x}</li>`).join(""));
+  const ans = s.answer ? el("div", "answer", `<span>תשובה:</span>${s.answer}`) : null;
+  sol.append(steps);
+  if (ans) sol.append(ans);
+  const markCorrect = on => { if (opts && Number.isInteger(q.correct)) opts.children[q.correct].classList.toggle("correct", on); };
+  // Solutions open one line at a time; the student clicks to reveal each further line.
+  // The correct option is highlighted only once the whole solution is visible.
+  let complete = true;
+  {
+    const parts = [...steps.children, ...(ans ? [ans] : [])];
+    let shown = 1;
+    parts.forEach((p, i) => { p.hidden = i >= shown; });
+    if (parts.length > 1) {
+      complete = false;
+      sol.classList.add("stepwise");
+      const next = el("button", "btn next");
+      next.type = "button";
+      const label = () => {
+        next.textContent = ans && shown === parts.length - 1
+          ? "הצג את התשובה הסופית"
+          : `הצג שורה נוספת (${shown} מתוך ${steps.children.length})`;
+      };
+      label();
+      next.addEventListener("click", () => {
+        parts[shown++].hidden = false;
+        if (shown < parts.length) { label(); return; }
+        next.hidden = true; complete = true; markCorrect(true);
+      });
+      sol.append(next);
+    }
+  }
+  let done = false;
+  btn.addEventListener("click", () => {
+    const open = sol.hidden;
+    sol.hidden = !open;
+    btn.setAttribute("aria-expanded", String(open));
+    btn.textContent = open ? "הסתר פתרון" : "הצג פתרון";
+    markCorrect(open && complete);
+    if (open && !done) { done = true; typeset(sol); }
+  });
+  c.append(row);
+  if (hintBox) c.append(hintBox);
+  c.append(sol);
+  return c;
+}
+
+// byExam: items are in exam order; a heading is inserted whenever the exam changes.
+function renderList(items, byExam) {
+  const list = el("div", "list");
+  main.replaceChildren(list);
+  let shown = 0, lastExam = null;
+  const more = el("button", "btn more");
+  more.type = "button";
+  function page() {
+    const chunk = el("div", "list");
+    items.slice(shown, shown + PAGE).forEach(q => {
+      if (byExam && matchOf(q).examId !== lastExam) {
+        lastExam = matchOf(q).examId;
+        chunk.append(el("h2", "exam-head", examLabel(EXAMS[lastExam])));
+      }
+      chunk.append(byExam ? card(q, matchOf(q)) : card(q));
+    });
+    shown = Math.min(items.length, shown + PAGE);
+    list.append(chunk);
+    typeset(chunk);
+    more.hidden = shown >= items.length;
+    more.textContent = `הצג עוד שאלות (${items.length - shown} נותרו)`;
+  }
+  more.addEventListener("click", page);
+  page();
+  main.append(more);
+}
+
+function render() {
+  const topic = topicSel.value, sub = subSel.value;
+  const words = fold(searchInput.value.trim()).split(" ").filter(Boolean);
+  // With a year, type of exam or exam but no topic or search, show whole exams in their original question order.
+  const byExam = !topic && !words.length && (yearSel.value || catSel.value || examSel.value);
+  document.getElementById("order-note").textContent = byExam
+    ? "השאלות מסודרות לפי סדר הופעתן בבחינה."
+    : "השאלות מסודרות לפי החומר המתמטי ולא לפי סדר הופעתן בבחינה.";
+  homeBtn.hidden = !topic && !byExam && !words.length;
+  const nActive = [topicSel, subSel, typeSel, yearSel, catSel, examSel].filter(x => x.value).length;
+  document.getElementById("active-count").textContent = nActive ? `${nActive} פעילים` : "";
+  document.getElementById("clear").hidden = !nActive;
+  statusBar.hidden = !topic && !byExam && !words.length;
+  if (statusBar.hidden) { renderMap(); return; }
+  const items = QUESTIONS.filter(q => (!topic || q.topic === topic) && (!sub || q.sub === sub) && kindFilter(q) &&
+    (!words.length || matchesSearch(q, words)));
+  if (byExam) items.sort((a, b) => {
+    const x = matchOf(a), y = matchOf(b);
+    return (examRank(EXAMS[y.examId]) - examRank(EXAMS[x.examId])) || x.examId.localeCompare(y.examId) ||
+      x.number.localeCompare(y.number, "he", { numeric: true });
+  });
+  count.innerHTML = words.length
+    ? `נמצאו <strong>${items.length}</strong> שאלות עבור „${escapeHtml(searchInput.value.trim())}”`
+    : `מוצגות <strong>${items.length}</strong> שאלות`;
+  if (!items.length) {
+    main.replaceChildren(el("p", "empty", words.length
+      ? "לא נמצאו שאלות שמכילות את כל המילים האלה. נסו מילה אחרת או קצרה יותר, או נקו את הסינון."
+      : "אין שאלות שמתאימות לסינון הזה. בחרו תת־נושא אחר או נקו את הסינון."));
+    return;
+  }
+  renderList(items, byExam);
+}
+
+topicSel.addEventListener("change", () => { fillSubs(); render(); });
+subSel.addEventListener("change", render);
+// A whole exam has its own link: index.html#b571-2024-summer-a
+examSel.addEventListener("change", () => {
+  history.replaceState(null, "", examSel.value ? "#" + examSel.value : location.pathname + location.search);
+  render();
+});
+typeSel.addEventListener("change", render);
+yearSel.addEventListener("change", render);
+catSel.addEventListener("change", () => { fillExams(); render(); });
+let searchTimer;
+searchInput.addEventListener("input", () => { clearTimeout(searchTimer); searchTimer = setTimeout(render, 200); });
+function clearFilters() {
+  searchInput.value = ""; topicSel.value = ""; examSel.value = ""; typeSel.value = ""; yearSel.value = ""; catSel.value = ""; fillExams(); fillSubs(); render();
+}
+// The clear button sits in the summary line: don't let the click also fold the panel.
+document.getElementById("clear").addEventListener("click", e => { e.preventDefault(); clearFilters(); });
+const homeBtn = document.getElementById("home");
+homeBtn.addEventListener("click", () => { clearFilters(); window.scrollTo({ top: 0 }); });
+document.getElementById("random").addEventListener("click", showRandom);
+
+if (matchMedia("(min-width: 1100px)").matches) document.getElementById("filters").open = true;
+{
+  const fromLink = decodeURIComponent(location.hash.slice(1));
+  if (EXAMS[fromLink]) { examSel.value = fromLink; }
+}
+
+// Hiding the sidebar (wide screens only) is remembered in this browser.
+const SIDE_KEY = "examsbank-{{COURSE_NUMBER}}-side-hidden";
+const wrapEl = document.querySelector(".wrap");
+function setSideHidden(hidden, remember) {
+  wrapEl.classList.toggle("side-hidden", hidden);
+  document.getElementById("hide-side").setAttribute("aria-expanded", String(!hidden));
+  document.getElementById("show-side").setAttribute("aria-expanded", String(!hidden));
+  if (remember) try { localStorage.setItem(SIDE_KEY, hidden ? "1" : ""); } catch {}
+}
+document.getElementById("hide-side").addEventListener("click", () => {
+  setSideHidden(true, true); document.getElementById("show-side").focus();
+});
+document.getElementById("show-side").addEventListener("click", () => {
+  setSideHidden(false, true); searchInput.focus();
+});
+try { if (localStorage.getItem(SIDE_KEY)) setSideHidden(true, false); } catch {}
+fillSubs();
+render();
+</script>
