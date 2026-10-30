@@ -1,5 +1,552 @@
 [
  {
+  "examId": "b481-2021-summer-b",
+  "category": "בגרות",
+  "questionnaire": "035481",
+  "units": 4,
+  "name": "בגרות 035481 – קיץ תשפ״א (2021), מועד ב׳",
+  "year": "תשפ״א",
+  "yearNum": 2021,
+  "season": "קיץ",
+  "moed": "ב",
+  "files": [
+   "bagrut-4u/yud-alef-4-collection-2026.pdf"
+  ],
+  "catalogNote": "עמודים 58–61 בחוברת, מבחן 14. בחוברת 2026 אין שורת מועד; המועד זוהה לפי חוברת 2025fix. מופיע גם בחוברת 2025fix (עמודים 5–8, מבחן 2)"
+ },
+ {
+  "examId": "b481-2021-summer-special",
+  "category": "בגרות",
+  "questionnaire": "035481",
+  "units": 4,
+  "name": "בגרות 035481 – קיץ תשפ״א (2021), מועד מיוחד",
+  "year": "תשפ״א",
+  "yearNum": 2021,
+  "season": "קיץ",
+  "moed": "מיוחד",
+  "files": [
+   "bagrut-4u/yud-alef-4-collection-2025fix.pdf"
+  ],
+  "catalogNote": "עמודים 1–4 בחוברת yud-alef-4-collection-2025fix.pdf, מבחן 1. הבחינה אינה מופיעה בחוברת 2026"
+ },
+ {
+  "examId": "b481-2022-winter",
+  "category": "בגרות",
+  "questionnaire": "035481",
+  "units": 4,
+  "name": "בגרות 035481 – חורף תשפ״ב (2022)",
+  "year": "תשפ״ב",
+  "yearNum": 2022,
+  "season": "חורף",
+  "moed": "",
+  "files": [
+   "bagrut-4u/yud-alef-4-collection-2025fix.pdf"
+  ],
+  "catalogNote": "עמודים 9–12 בחוברת yud-alef-4-collection-2025fix.pdf, מבחן 3. הבחינה אינה מופיעה בחוברת 2026"
+ },
+ {
+  "examId": "b481-2022-winter-nivtzarim",
+  "category": "בגרות",
+  "questionnaire": "035481",
+  "units": 4,
+  "name": "בגרות 035481 – חורף תשפ״ב (2022), מועד נבצרים",
+  "year": "תשפ״ב",
+  "yearNum": 2022,
+  "season": "חורף",
+  "moed": "נבצרים",
+  "files": [
+   "bagrut-4u/yud-alef-4-collection-2026.pdf",
+   "bagrut-4u/yud-alef-4-collection-2025fix.pdf"
+  ],
+  "catalogNote": "עמודים 1–4 בחוברת, מבחן 1; מופיע גם בחוברת 2025fix (מבחן 4)"
+ },
+ {
+  "examId": "b481-2022-summer-b",
+  "category": "בגרות",
+  "questionnaire": "035481",
+  "units": 4,
+  "name": "בגרות 035481 – קיץ תשפ״ב (2022), מועד ב׳",
+  "year": "תשפ״ב",
+  "yearNum": 2022,
+  "season": "קיץ",
+  "moed": "ב",
+  "files": [
+   "bagrut-4u/yud-alef-4-collection-2026.pdf",
+   "bagrut-4u/yud-alef-4-collection-2025fix.pdf"
+  ],
+  "catalogNote": "עמודים 5–8 בחוברת, מבחן 2; מופיע גם בחוברת 2025fix (מבחן 5)"
+ },
+ {
+  "examId": "b481-2023-winter",
+  "category": "בגרות",
+  "questionnaire": "035481",
+  "units": 4,
+  "name": "בגרות 035481 – חורף תשפ״ג (2023)",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "חורף",
+  "moed": "",
+  "files": [
+   "bagrut-4u/yud-alef-4-collection-2026.pdf",
+   "bagrut-4u/yud-alef-4-collection-2025fix.pdf"
+  ],
+  "catalogNote": "עמודים 9–12 בחוברת, מבחן 3; מופיע גם בחוברת 2025fix (מבחן 6)"
+ },
+ {
+  "examId": "b481-2023-summer-a",
+  "category": "בגרות",
+  "questionnaire": "035481",
+  "units": 4,
+  "name": "בגרות 035481 – קיץ תשפ״ג (2023), מועד א׳",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "קיץ",
+  "moed": "א",
+  "files": [
+   "bagrut-4u/yud-alef-4-collection-2026.pdf",
+   "bagrut-4u/yud-alef-4-collection-2025fix.pdf"
+  ],
+  "catalogNote": "עמודים 13–16 בחוברת, מבחן 4; מופיע גם בחוברת 2025fix (מבחן 7)"
+ },
+ {
+  "examId": "b481-2023-summer-b",
+  "category": "בגרות",
+  "questionnaire": "035481",
+  "units": 4,
+  "name": "בגרות 035481 – קיץ תשפ״ג (2023), מועד ב׳",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "קיץ",
+  "moed": "ב",
+  "files": [
+   "bagrut-4u/yud-alef-4-collection-2026.pdf",
+   "bagrut-4u/yud-alef-4-collection-2025fix.pdf"
+  ],
+  "catalogNote": "עמודים 17–20 בחוברת, מבחן 5; מופיע גם בחוברת 2025fix (מבחן 8)"
+ },
+ {
+  "examId": "b481-2023-summer-special",
+  "category": "בגרות",
+  "questionnaire": "035481",
+  "units": 4,
+  "name": "בגרות 035481 – קיץ תשפ״ג (2023), מועד מיוחד",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "קיץ",
+  "moed": "מיוחד",
+  "files": [
+   "bagrut-4u/yud-alef-4-collection-2026.pdf",
+   "bagrut-4u/yud-alef-4-collection-2025fix.pdf"
+  ],
+  "catalogNote": "עמודים 21–24 בחוברת, מבחן 6; מופיע גם בחוברת 2025fix (מבחן 9)"
+ },
+ {
+  "examId": "b481-2024-winter",
+  "category": "בגרות",
+  "questionnaire": "035481",
+  "units": 4,
+  "name": "בגרות 035481 – חורף תשפ״ד (2024)",
+  "year": "תשפ״ד",
+  "yearNum": 2024,
+  "season": "חורף",
+  "moed": "",
+  "files": [
+   "bagrut-4u/yud-alef-4-collection-2026.pdf",
+   "bagrut-4u/yud-alef-4-collection-2025fix.pdf"
+  ],
+  "catalogNote": "עמודים 25–28 בחוברת, מבחן 7; מופיע גם בחוברת 2025fix (מבחן 10)"
+ },
+ {
+  "examId": "b481-2024-summer-a",
+  "category": "בגרות",
+  "questionnaire": "035481",
+  "units": 4,
+  "name": "בגרות 035481 – קיץ תשפ״ד (2024), מועד א׳",
+  "year": "תשפ״ד",
+  "yearNum": 2024,
+  "season": "קיץ",
+  "moed": "א",
+  "files": [
+   "bagrut-4u/yud-alef-4-collection-2026.pdf"
+  ],
+  "catalogNote": "עמודים 29–32 בחוברת, מבחן 8. מופיע גם בחוברת 2025fix (עמודים 41–44, מבחן 11)"
+ },
+ {
+  "examId": "b481-2024-summer-b",
+  "category": "בגרות",
+  "questionnaire": "035481",
+  "units": 4,
+  "name": "בגרות 035481 – קיץ תשפ״ד (2024), מועד ב׳",
+  "year": "תשפ״ד",
+  "yearNum": 2024,
+  "season": "קיץ",
+  "moed": "ב",
+  "files": [
+   "bagrut-4u/yud-alef-4-collection-2026.pdf"
+  ],
+  "catalogNote": "עמודים 33–36 בחוברת, מבחן 9. מופיע גם בחוברת 2025fix (עמודים 45–48, מבחן 12)"
+ },
+ {
+  "examId": "b481-2025-winter",
+  "category": "בגרות",
+  "questionnaire": "035481",
+  "units": 4,
+  "name": "בגרות 035481 – חורף תשפ״ה (2025)",
+  "year": "תשפ״ה",
+  "yearNum": 2025,
+  "season": "חורף",
+  "moed": "",
+  "files": [
+   "bagrut-4u/yud-alef-4-collection-2026.pdf"
+  ],
+  "catalogNote": "עמודים 37–41 בחוברת, מבחן 10"
+ },
+ {
+  "examId": "b481-2025-summer-a",
+  "category": "בגרות",
+  "questionnaire": "035481",
+  "units": 4,
+  "name": "בגרות 035481 – קיץ תשפ״ה (2025), מועד א׳",
+  "year": "תשפ״ה",
+  "yearNum": 2025,
+  "season": "קיץ",
+  "moed": "א",
+  "files": [
+   "bagrut-4u/yud-alef-4-collection-2026.pdf"
+  ],
+  "catalogNote": "עמודים 43–46 בחוברת, מבחן 11"
+ },
+ {
+  "examId": "b481-2025-summer-b",
+  "category": "בגרות",
+  "questionnaire": "035481",
+  "units": 4,
+  "name": "בגרות 035481 – קיץ תשפ״ה (2025), מועד ב׳",
+  "year": "תשפ״ה",
+  "yearNum": 2025,
+  "season": "קיץ",
+  "moed": "ב",
+  "files": [
+   "bagrut-4u/yud-alef-4-collection-2026.pdf"
+  ],
+  "catalogNote": "עמודים 47–51 בחוברת, מבחן 12"
+ },
+ {
+  "examId": "b481-2026-winter",
+  "category": "בגרות",
+  "questionnaire": "035481",
+  "units": 4,
+  "name": "בגרות 035481 – חורף תשפ״ו (2026)",
+  "year": "תשפ״ו",
+  "yearNum": 2026,
+  "season": "חורף",
+  "moed": "",
+  "files": [
+   "bagrut-4u/yud-alef-4-collection-2026.pdf"
+  ],
+  "catalogNote": "עמודים 53–57 בחוברת, מבחן 13"
+ },
+ {
+  "examId": "b482-2019-summer-b",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – קיץ תשע״ט (2019), מועד ב׳",
+  "year": "תשע״ט",
+  "yearNum": 2019,
+  "season": "קיץ",
+  "moed": "ב",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 1–4 בחוברת, מבחן 1"
+ },
+ {
+  "examId": "b482-2020-winter",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – חורף תש״ף (2020)",
+  "year": "תש״ף",
+  "yearNum": 2020,
+  "season": "חורף",
+  "moed": "",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 5–8 בחוברת, מבחן 2"
+ },
+ {
+  "examId": "b482-2020-summer-a",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – קיץ תש״ף (2020), מועד א׳",
+  "year": "תש״ף",
+  "yearNum": 2020,
+  "season": "קיץ",
+  "moed": "א",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 9–12 בחוברת, מבחן 3"
+ },
+ {
+  "examId": "b482-2020-summer-b",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – קיץ תש״ף (2020), מועד ב׳",
+  "year": "תש״ף",
+  "yearNum": 2020,
+  "season": "קיץ",
+  "moed": "ב",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 13–16 בחוברת, מבחן 4"
+ },
+ {
+  "examId": "b482-2021-winter",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – חורף תשפ״א (2021)",
+  "year": "תשפ״א",
+  "yearNum": 2021,
+  "season": "חורף",
+  "moed": "",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 17–20 בחוברת, מבחן 5"
+ },
+ {
+  "examId": "b482-2021-winter-late",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – חורף מאוחר תשפ״א (2021)",
+  "year": "תשפ״א",
+  "yearNum": 2021,
+  "season": "חורף",
+  "moed": "",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 21–24 בחוברת, מבחן 6"
+ },
+ {
+  "examId": "b482-2021-summer-a",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – קיץ תשפ״א (2021), מועד א׳",
+  "year": "תשפ״א",
+  "yearNum": 2021,
+  "season": "קיץ",
+  "moed": "א",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 25–28 בחוברת, מבחן 7"
+ },
+ {
+  "examId": "b482-2021-summer-b",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – קיץ תשפ״א (2021), מועד ב׳",
+  "year": "תשפ״א",
+  "yearNum": 2021,
+  "season": "קיץ",
+  "moed": "ב",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 33–36 בחוברת, מבחן 9"
+ },
+ {
+  "examId": "b482-2021-summer-special",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – קיץ תשפ״א (2021), מועד מיוחד",
+  "year": "תשפ״א",
+  "yearNum": 2021,
+  "season": "קיץ",
+  "moed": "מיוחד",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 29–32 בחוברת, מבחן 8"
+ },
+ {
+  "examId": "b482-2022-winter",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – חורף תשפ״ב (2022)",
+  "year": "תשפ״ב",
+  "yearNum": 2022,
+  "season": "חורף",
+  "moed": "",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 37–40 בחוברת, מבחן 10"
+ },
+ {
+  "examId": "b482-2022-winter-nivtzarim",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – חורף תשפ״ב (2022), מועד נבצרים",
+  "year": "תשפ״ב",
+  "yearNum": 2022,
+  "season": "חורף",
+  "moed": "נבצרים",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 41–43 בחוברת, מבחן 11 (עמוד 44 ריק)"
+ },
+ {
+  "examId": "b482-2022-summer-a",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – קיץ תשפ״ב (2022), מועד א׳",
+  "year": "תשפ״ב",
+  "yearNum": 2022,
+  "season": "קיץ",
+  "moed": "א",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 45–47 בחוברת, מבחן 12 (עמוד 48 ריק). בכותרת הרצה אין ציון מועד (הוסק: מועד א׳)"
+ },
+ {
+  "examId": "b482-2022-summer-b",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – קיץ תשפ״ב (2022), מועד ב׳",
+  "year": "תשפ״ב",
+  "yearNum": 2022,
+  "season": "קיץ",
+  "moed": "ב",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 49–51 בחוברת, מבחן 13 (עמוד 52 ריק)"
+ },
+ {
+  "examId": "b482-2023-winter",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – חורף תשפ״ג (2023)",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "חורף",
+  "moed": "",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 53–55 בחוברת, מבחן 14 (עמוד 56 ריק)"
+ },
+ {
+  "examId": "b482-2023-summer-a",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – קיץ תשפ״ג (2023), מועד א׳",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "קיץ",
+  "moed": "א",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 57–59 בחוברת, מבחן 15 (עמוד 60 ריק). בכותרת הרצה אין ציון מועד (הוסק: מועד א׳)"
+ },
+ {
+  "examId": "b482-2023-summer-b",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – קיץ תשפ״ג (2023), מועד ב׳",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "קיץ",
+  "moed": "ב",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 65–67 בחוברת, מבחן 17 (עמוד 68 ריק)"
+ },
+ {
+  "examId": "b482-2023-summer-special",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – קיץ תשפ״ג (2023), מועד מיוחד",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "קיץ",
+  "moed": "מיוחד",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 61–63 בחוברת, מבחן 16 (עמוד 64 ריק)"
+ },
+ {
+  "examId": "b482-2024-winter",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – חורף תשפ״ד (2024)",
+  "year": "תשפ״ד",
+  "yearNum": 2024,
+  "season": "חורף",
+  "moed": "",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 69–71 בחוברת, מבחן 18 (עמוד 72 ריק). בעמודים אין כותרת רצה: המועד הוסק מהסדר הכרונולוגי בחוברת ולא אומת"
+ },
+ {
+  "examId": "b482-2024-summer-a",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – קיץ תשפ״ד (2024), מועד א׳",
+  "year": "תשפ״ד",
+  "yearNum": 2024,
+  "season": "קיץ",
+  "moed": "א",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 73–75 בחוברת, מבחן 19 (עמוד 76 ריק). בעמודים אין כותרת רצה: המועד הוסק מהסדר הכרונולוגי בחוברת ולא אומת"
+ },
+ {
+  "examId": "b482-2024-summer-b",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – קיץ תשפ״ד (2024), מועד ב׳",
+  "year": "תשפ״ד",
+  "yearNum": 2024,
+  "season": "קיץ",
+  "moed": "ב",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 77–79 בחוברת, מבחן 20 (עמוד 80 ריק). בעמודים אין כותרת רצה: המועד הוסק מהסדר הכרונולוגי בחוברת ולא אומת"
+ },
+ {
   "examId": "b571-2022-winter",
   "category": "בגרות",
   "questionnaire": "035571",
@@ -86,20 +633,6 @@
   "catalogNote": "יש גם גרסה מותאמת שבה שאלה 8 הוחלפה: own/2023-summer-a-q8-swapped.pdf"
  },
  {
-  "examId": "b571-2023-summer-special",
-  "category": "בגרות",
-  "questionnaire": "035571",
-  "units": 5,
-  "name": "בגרות 035571 – קיץ תשפ״ג (2023), מועד מיוחד",
-  "year": "תשפ״ג",
-  "yearNum": 2023,
-  "season": "קיץ",
-  "moed": "מיוחד",
-  "files": [
-   "bagrut-571/2023-summer-special.pdf"
-  ]
- },
- {
   "examId": "b571-2023-summer-b",
   "category": "בגרות",
   "questionnaire": "035571",
@@ -113,6 +646,20 @@
    "bagrut-571/2023-summer-b.pdf"
   ],
   "catalogNote": "יש גם גרסה מותאמת שבה שאלה 8 הוחלפה: own/2023-summer-b-q8-swapped.pdf"
+ },
+ {
+  "examId": "b571-2023-summer-special",
+  "category": "בגרות",
+  "questionnaire": "035571",
+  "units": 5,
+  "name": "בגרות 035571 – קיץ תשפ״ג (2023), מועד מיוחד",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "קיץ",
+  "moed": "מיוחד",
+  "files": [
+   "bagrut-571/2023-summer-special.pdf"
+  ]
  },
  {
   "examId": "b571-2024-winter",
@@ -255,20 +802,6 @@
   ]
  },
  {
-  "examId": "b582-2023-summer-special",
-  "category": "בגרות",
-  "questionnaire": "035582",
-  "units": 5,
-  "name": "בגרות 035582 – קיץ תשפ״ג (2023), מועד מיוחד",
-  "year": "תשפ״ג",
-  "yearNum": 2023,
-  "season": "קיץ",
-  "moed": "מיוחד",
-  "files": [
-   "bagrut-582/2023-summer-special.pdf"
-  ]
- },
- {
   "examId": "b582-2023-summer-b",
   "category": "בגרות",
   "questionnaire": "035582",
@@ -280,6 +813,20 @@
   "moed": "ב",
   "files": [
    "bagrut-582/2023-summer-b.pdf"
+  ]
+ },
+ {
+  "examId": "b582-2023-summer-special",
+  "category": "בגרות",
+  "questionnaire": "035582",
+  "units": 5,
+  "name": "בגרות 035582 – קיץ תשפ״ג (2023), מועד מיוחד",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "קיץ",
+  "moed": "מיוחד",
+  "files": [
+   "bagrut-582/2023-summer-special.pdf"
   ]
  },
  {

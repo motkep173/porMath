@@ -25,6 +25,13 @@ def exam_label(ex):
     return ex["name"]
 
 
+def fmt_points(p):
+    """Points such as 33.33 are thirds on the form: print them as 33⅓."""
+    whole = int(p)
+    frac = p - whole
+    return f"{whole}⅓" if abs(frac - 1 / 3) < 0.01 else f"{whole}⅔" if abs(frac - 2 / 3) < 0.01 else f"{p:g}"
+
+
 def num_key(n):
     return [int(x) if x.isdigit() else x for x in re.split(r"(\d+)", n)]
 
@@ -61,7 +68,7 @@ def image_tag(q):
 
 
 def question_html(number, points, q):
-    pts = f" ({points} נק׳)" if points else ""
+    pts = f" ({fmt_points(points)} נק׳)" if points else ""
     out = [f'<section class="q"><h3>שאלה {html.escape(number)}{pts}</h3><div class="text">{q["text"]}</div>', image_tag(q)]
     if q["type"] == "mc":
         out.append('<ol class="options">' + "".join(
