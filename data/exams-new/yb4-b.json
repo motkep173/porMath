@@ -1,0 +1,152 @@
+[
+ {
+  "examId": "b482-2022-winter-nivtzarim",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – חורף תשפ״ב (2022), מועד נבצרים",
+  "year": "תשפ״ב",
+  "yearNum": 2022,
+  "season": "חורף",
+  "moed": "נבצרים",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 41–43 בחוברת, מבחן 11 (עמוד 44 ריק)"
+ },
+ {
+  "examId": "b482-2022-summer-a",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – קיץ תשפ״ב (2022), מועד א׳",
+  "year": "תשפ״ב",
+  "yearNum": 2022,
+  "season": "קיץ",
+  "moed": "א",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 45–47 בחוברת, מבחן 12 (עמוד 48 ריק). בכותרת הרצה אין ציון מועד (הוסק: מועד א׳)"
+ },
+ {
+  "examId": "b482-2022-summer-b",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – קיץ תשפ״ב (2022), מועד ב׳",
+  "year": "תשפ״ב",
+  "yearNum": 2022,
+  "season": "קיץ",
+  "moed": "ב",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 49–51 בחוברת, מבחן 13 (עמוד 52 ריק)"
+ },
+ {
+  "examId": "b482-2023-winter",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – חורף תשפ״ג (2023)",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "חורף",
+  "moed": "",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 53–55 בחוברת, מבחן 14 (עמוד 56 ריק)"
+ },
+ {
+  "examId": "b482-2023-summer-a",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – קיץ תשפ״ג (2023), מועד א׳",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "קיץ",
+  "moed": "א",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 57–59 בחוברת, מבחן 15 (עמוד 60 ריק). בכותרת הרצה אין ציון מועד (הוסק: מועד א׳)"
+ },
+ {
+  "examId": "b482-2023-summer-special",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – קיץ תשפ״ג (2023), מועד מיוחד",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "קיץ",
+  "moed": "מיוחד",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 61–63 בחוברת, מבחן 16 (עמוד 64 ריק)"
+ },
+ {
+  "examId": "b482-2023-summer-b",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – קיץ תשפ״ג (2023), מועד ב׳",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "קיץ",
+  "moed": "ב",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 65–67 בחוברת, מבחן 17 (עמוד 68 ריק)"
+ },
+ {
+  "examId": "b482-2024-winter",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – חורף תשפ״ד (2024)",
+  "year": "תשפ״ד",
+  "yearNum": 2024,
+  "season": "חורף",
+  "moed": "",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 69–71 בחוברת, מבחן 18 (עמוד 72 ריק). בעמודים אין כותרת רצה: המועד הוסק מהסדר הכרונולוגי בחוברת ולא אומת"
+ },
+ {
+  "examId": "b482-2024-summer-a",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – קיץ תשפ״ד (2024), מועד א׳",
+  "year": "תשפ״ד",
+  "yearNum": 2024,
+  "season": "קיץ",
+  "moed": "א",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 73–75 בחוברת, מבחן 19 (עמוד 76 ריק). בעמודים אין כותרת רצה: המועד הוסק מהסדר הכרונולוגי בחוברת ולא אומת"
+ },
+ {
+  "examId": "b482-2024-summer-b",
+  "category": "בגרות",
+  "questionnaire": "035482",
+  "units": 4,
+  "name": "בגרות 035482 – קיץ תשפ״ד (2024), מועד ב׳",
+  "year": "תשפ״ד",
+  "yearNum": 2024,
+  "season": "קיץ",
+  "moed": "ב",
+  "files": [
+   "bagrut-4u/yud-bet-4-collection-2025.pdf"
+  ],
+  "catalogNote": "עמודים 77–79 בחוברת, מבחן 20 (עמוד 80 ריק). בעמודים אין כותרת רצה: המועד הוסק מהסדר הכרונולוגי בחוברת ולא אומת"
+ }
+]
