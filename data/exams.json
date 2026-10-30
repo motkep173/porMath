@@ -171,6 +171,174 @@
   ]
  },
  {
+  "examId": "b582-2022-winter",
+  "category": "בגרות",
+  "questionnaire": "035582",
+  "units": 5,
+  "name": "בגרות 035582 – חורף תשפ״ב (2022)",
+  "year": "תשפ״ב",
+  "yearNum": 2022,
+  "season": "חורף",
+  "moed": "",
+  "files": [
+   "bagrut-582/2022-winter.pdf"
+  ]
+ },
+ {
+  "examId": "b582-2022-winter-nivtzarim",
+  "category": "בגרות",
+  "questionnaire": "035582",
+  "units": 5,
+  "name": "בגרות 035582 – חורף תשפ״ב (2022), מועד נבצרים",
+  "year": "תשפ״ב",
+  "yearNum": 2022,
+  "season": "חורף",
+  "moed": "נבצרים",
+  "files": [
+   "bagrut-582/2022-winter-nivtzarim.pdf"
+  ]
+ },
+ {
+  "examId": "b582-2022-summer-a",
+  "category": "בגרות",
+  "questionnaire": "035582",
+  "units": 5,
+  "name": "בגרות 035582 – קיץ תשפ״ב (2022), מועד א׳",
+  "year": "תשפ״ב",
+  "yearNum": 2022,
+  "season": "קיץ",
+  "moed": "א",
+  "files": [
+   "bagrut-582/2022-summer-a.pdf"
+  ]
+ },
+ {
+  "examId": "b582-2022-summer-b",
+  "category": "בגרות",
+  "questionnaire": "035582",
+  "units": 5,
+  "name": "בגרות 035582 – קיץ תשפ״ב (2022), מועד ב׳",
+  "year": "תשפ״ב",
+  "yearNum": 2022,
+  "season": "קיץ",
+  "moed": "ב",
+  "files": [
+   "bagrut-582/2022-summer-b.pdf"
+  ]
+ },
+ {
+  "examId": "b582-2023-winter",
+  "category": "בגרות",
+  "questionnaire": "035582",
+  "units": 5,
+  "name": "בגרות 035582 – חורף תשפ״ג (2023)",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "חורף",
+  "moed": "",
+  "files": [
+   "bagrut-582/2023-winter.pdf"
+  ]
+ },
+ {
+  "examId": "b582-2023-summer-a",
+  "category": "בגרות",
+  "questionnaire": "035582",
+  "units": 5,
+  "name": "בגרות 035582 – קיץ תשפ״ג (2023), מועד א׳",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "קיץ",
+  "moed": "א",
+  "files": [
+   "bagrut-582/2023-summer-a.pdf"
+  ]
+ },
+ {
+  "examId": "b582-2023-summer-special",
+  "category": "בגרות",
+  "questionnaire": "035582",
+  "units": 5,
+  "name": "בגרות 035582 – קיץ תשפ״ג (2023), מועד מיוחד",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "קיץ",
+  "moed": "מיוחד",
+  "files": [
+   "bagrut-582/2023-summer-special.pdf"
+  ]
+ },
+ {
+  "examId": "b582-2023-summer-b",
+  "category": "בגרות",
+  "questionnaire": "035582",
+  "units": 5,
+  "name": "בגרות 035582 – קיץ תשפ״ג (2023), מועד ב׳",
+  "year": "תשפ״ג",
+  "yearNum": 2023,
+  "season": "קיץ",
+  "moed": "ב",
+  "files": [
+   "bagrut-582/2023-summer-b.pdf"
+  ]
+ },
+ {
+  "examId": "b582-2024-winter",
+  "category": "בגרות",
+  "questionnaire": "035582",
+  "units": 5,
+  "name": "בגרות 035582 – חורף תשפ״ד (2024)",
+  "year": "תשפ״ד",
+  "yearNum": 2024,
+  "season": "חורף",
+  "moed": "",
+  "files": [
+   "bagrut-582/2024-winter.pdf"
+  ]
+ },
+ {
+  "examId": "b582-2024-summer-a",
+  "category": "בגרות",
+  "questionnaire": "035582",
+  "units": 5,
+  "name": "בגרות 035582 – קיץ תשפ״ד (2024), מועד א׳",
+  "year": "תשפ״ד",
+  "yearNum": 2024,
+  "season": "קיץ",
+  "moed": "א",
+  "files": [
+   "bagrut-582/2024-summer-a.pdf"
+  ]
+ },
+ {
+  "examId": "b582-2024-summer-b",
+  "category": "בגרות",
+  "questionnaire": "035582",
+  "units": 5,
+  "name": "בגרות 035582 – קיץ תשפ״ד (2024), מועד ב׳",
+  "year": "תשפ״ד",
+  "yearNum": 2024,
+  "season": "קיץ",
+  "moed": "ב",
+  "files": [
+   "bagrut-582/2024-summer-b.pdf"
+  ]
+ },
+ {
+  "examId": "b582-2025-winter",
+  "category": "בגרות",
+  "questionnaire": "035582",
+  "units": 5,
+  "name": "בגרות 035582 – חורף תשפ״ה (2025)",
+  "year": "תשפ״ה",
+  "yearNum": 2025,
+  "season": "חורף",
+  "moed": "",
+  "files": [
+   "bagrut-582/2025-winter.pdf"
+  ]
+ },
+ {
   "examId": "own-571-swap-q8",
   "category": "מבחנים שלי",
   "questionnaire": "035571",

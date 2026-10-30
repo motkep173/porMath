@@ -10,6 +10,12 @@ DATA = os.path.join(ROOT, "data")
 tax = json.load(open(os.path.join(DATA, "taxonomy.json")))
 SUBS = {t["name"]: set(t["subs"]) for t in tax["topics"]}
 catalog = {e["examId"]: e for e in json.load(open(os.path.join(DATA, "exams.json")))}
+# Catalog entries still being added in parallel live in data/exams-new/*.json until they are merged into exams.json.
+_new = os.path.join(DATA, "exams-new")
+if os.path.isdir(_new):
+    for _f in sorted(os.listdir(_new)):
+        if _f.endswith(".json"):
+            catalog.update({e["examId"]: e for e in json.load(open(os.path.join(_new, _f)))})
 
 EXAM_KEYS = {"examId", "category", "questionnaire", "units", "name", "year", "yearNum", "season", "moed",
              "version", "date", "sourceFiles", "solutionSource", "issues", "questions"}
