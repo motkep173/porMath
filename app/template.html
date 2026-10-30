@@ -1,4 +1,4 @@
-<title>porMath · מאגר מבחנים במתמטיקה</title>
+<title>מתמטיקה עם פורת · מאגר מבחנים</title>
 <meta name="description" content="שאלות ממבחני עבר ב{{COURSE_NAME}} ({{COURSE_NUMBER}}), {{ORG_LINE}}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -93,7 +93,7 @@ body {
   display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding: 12px 18px;
   background: var(--sheet); border: 1px solid var(--line); border-bottom: 3px solid var(--brand-bright); border-radius: 12px;
 }
-.org-name { font-size: var(--step-1); font-weight: 700; }
+.org-name { font-size: var(--step-2); font-weight: 800; line-height: 1.1; color: var(--brand); white-space: nowrap; }
 .logo { display: block; height: 46px; width: auto; background: #fff; border-radius: 6px; padding: 3px 6px; box-sizing: content-box; }
 .titles { display: grid; gap: 1px; padding-inline-start: 16px; border-inline-start: 1px solid var(--line); min-width: 0; }
 h1 { font-size: var(--step-2); line-height: 1.2; margin: 0; }
@@ -328,7 +328,7 @@ mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width:
   <header class="topbar">
     {{BRAND}}
     <div class="titles">
-      <h1>מאגר מבחנים במתמטיקה</h1>
+      <h1>מאגר מבחנים להכנה לבגרות</h1>
       <div class="course"><b>{{COURSE_NAME}}</b>{{UNIT_SUFFIX}}</div>
     </div>
     <div class="stats" id="stats"></div>
@@ -376,11 +376,10 @@ mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width:
       <select id="sub" disabled></select>
     </div>
     <div class="field">
-      <label for="qtype">סוג שאלה</label>
+      <label for="qtype">פתרונות</label>
       <select id="qtype">
         <option value="">כל השאלות</option>
-        <option value="mc">שאלות אמריקאיות</option>
-        <option value="open">שאלות פתוחות</option>
+        <option value="solved">רק שאלות עם פתרון</option>
       </select>
     </div>
     <div class="field">
@@ -395,6 +394,10 @@ mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width:
         <option value="בית ספר">מבחנים מבתי ספר</option>
         <option value="מבחנים שלי">המבחנים שלנו</option>
       </select>
+    </div>
+    <div class="field">
+      <label for="questionnaire">שאלון</label>
+      <select id="questionnaire"></select>
     </div>
     <div class="field">
       <label for="exam">מבחן</label>
@@ -458,6 +461,7 @@ const examSel = document.getElementById("exam");
 const yearSel = document.getElementById("year");
 const catSel = document.getElementById("category");
 const typeSel = document.getElementById("qtype");
+const qnSel = document.getElementById("questionnaire");
 const main = document.getElementById("main");
 const searchInput = document.getElementById("search");
 
@@ -535,22 +539,25 @@ yearSel.append(option("", "כל השנים"), ...[...new Set(years)].sort((a, b)
 // The exam list follows the chosen type of exam; newest first.
 function fillExams() {
   const keep = examSel.value;
-  const list = DATA.exams.filter(e => !catSel.value || e.category === catSel.value)
+  const list = DATA.exams.filter(e => (!catSel.value || e.category === catSel.value) && (!qnSel.value || e.questionnaire === qnSel.value))
     .sort((x, y) => examRank(y) - examRank(x));
   examSel.replaceChildren(option("", "כל המבחנים"), ...list.map(e => option(e.examId, e.name)));
   examSel.value = list.some(e => e.examId === keep) ? keep : "";
 }
+// Questionnaires present in the bank, with their units, e.g. "035571 (5 יח״ל)".
+qnSel.append(option("", "כל השאלונים"), ...[...new Map(DATA.exams.map(e => [e.questionnaire, e.units])).entries()]
+  .sort().map(([q, u]) => option(q, `${q} (${u} יח״ל)`)));
 fillExams();
 
 function examOk(id) {
   const e = EXAMS[id];
   return (!yearSel.value || e.yearNum === +yearSel.value) && (!catSel.value || e.category === catSel.value) &&
-    (!examSel.value || id === examSel.value);
+    (!qnSel.value || e.questionnaire === qnSel.value) && (!examSel.value || id === examSel.value);
 }
 // The appearance that matches the exam filters, or undefined.
 const matchOf = q => appearances(q).find(a => examOk(a.examId));
 function kindFilter(q) {
-  return (!typeSel.value || q.type === typeSel.value) && !!matchOf(q);
+  return (!typeSel.value || !!q.solution) && !!matchOf(q);
 }
 
 function renderMap() {
@@ -566,6 +573,16 @@ function renderMap() {
   });
   tip.append(toFilters, ".");
   view.push(tip);
+  // Straight to the questions that already have a full solution.
+  const nSol = QUESTIONS.filter(q => q.solution).length;
+  if (nSol && !typeSel.value) {
+    const solTip = el("p", "exam-tip", `יש באתר פתרונות מלאים ל־${nSol} שאלות. `);
+    const toSol = el("button", "link-btn", "הצגת השאלות עם פתרון בלבד");
+    toSol.type = "button";
+    toSol.addEventListener("click", () => { typeSel.value = "solved"; render(); main.scrollIntoView({ behavior: "smooth" }); });
+    solTip.append(toSol, ".");
+    view.push(solTip);
+  }
   // Quick links to the latest exams (not our own collections): each one selects that exam.
   const recent = DATA.exams.filter(e => e.category !== "מבחנים שלי")
     .sort((x, y) => examRank(y) - examRank(x)).slice(0, 4);
@@ -575,7 +592,7 @@ function renderMap() {
       const b = el("button", "btn", examLabel(e));
       b.type = "button";
       b.addEventListener("click", () => {
-        yearSel.value = ""; catSel.value = ""; fillExams(); examSel.value = e.examId; render();
+        yearSel.value = ""; catSel.value = ""; qnSel.value = ""; fillExams(); examSel.value = e.examId; render();
         main.scrollIntoView({ behavior: "smooth" });
       });
       row.append(b);
@@ -802,13 +819,13 @@ function renderList(items, byExam) {
 function render() {
   const topic = topicSel.value, sub = subSel.value;
   const words = fold(searchInput.value.trim()).split(" ").filter(Boolean);
-  // With a year, type of exam or exam but no topic or search, show whole exams in their original question order.
-  const byExam = !topic && !words.length && (yearSel.value || catSel.value || examSel.value);
+  // With a year, type of exam, questionnaire, exam or "with solution" but no topic or search, list by exam in the original question order.
+  const byExam = !topic && !words.length && (yearSel.value || catSel.value || qnSel.value || examSel.value || typeSel.value);
   document.getElementById("order-note").textContent = byExam
     ? "השאלות מסודרות לפי סדר הופעתן בבחינה."
     : "השאלות מסודרות לפי החומר המתמטי ולא לפי סדר הופעתן בבחינה.";
   homeBtn.hidden = !topic && !byExam && !words.length;
-  const nActive = [topicSel, subSel, typeSel, yearSel, catSel, examSel].filter(x => x.value).length;
+  const nActive = [topicSel, subSel, typeSel, yearSel, catSel, qnSel, examSel].filter(x => x.value).length;
   document.getElementById("active-count").textContent = nActive ? `${nActive} פעילים` : "";
   document.getElementById("clear").hidden = !nActive;
   statusBar.hidden = !topic && !byExam && !words.length;
@@ -842,10 +859,11 @@ examSel.addEventListener("change", () => {
 typeSel.addEventListener("change", render);
 yearSel.addEventListener("change", render);
 catSel.addEventListener("change", () => { fillExams(); render(); });
+qnSel.addEventListener("change", () => { fillExams(); render(); });
 let searchTimer;
 searchInput.addEventListener("input", () => { clearTimeout(searchTimer); searchTimer = setTimeout(render, 200); });
 function clearFilters() {
-  searchInput.value = ""; topicSel.value = ""; examSel.value = ""; typeSel.value = ""; yearSel.value = ""; catSel.value = ""; fillExams(); fillSubs(); render();
+  searchInput.value = ""; topicSel.value = ""; examSel.value = ""; typeSel.value = ""; yearSel.value = ""; catSel.value = ""; qnSel.value = ""; fillExams(); fillSubs(); render();
 }
 // The clear button sits in the summary line: don't let the click also fold the panel.
 document.getElementById("clear").addEventListener("click", e => { e.preventDefault(); clearFilters(); });
