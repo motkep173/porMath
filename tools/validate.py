@@ -20,7 +20,7 @@ if os.path.isdir(_new):
 EXAM_KEYS = {"examId", "category", "questionnaire", "units", "name", "year", "yearNum", "season", "moed",
              "version", "date", "sourceFiles", "solutionSource", "issues", "questions"}
 Q_KEYS = {"id", "number", "points", "type", "text", "options", "correct", "topic", "sub", "solution",
-          "image", "notes", "alsoIn", "hint", "hintReviewed", "offSyllabus"}
+          "image", "notes", "alsoIn", "hint", "hintReviewed", "offSyllabus", "stem", "questionPoints"}
 SOL_KEYS = {"official", "steps", "answer", "reviewed"}
 CATEGORIES = {"בגרות", "בית ספר", "מבחנים שלי"}
 MOEDS = {"", "א", "ב", "ג", "מיוחד", "נבצרים"}
@@ -92,6 +92,7 @@ def check_file(path, errors, texitems, seen_ids):
             elif not os.path.exists(os.path.join(DATA, "questions", f"{ref.get('examId')}.json")):
                 errors.append(f"{w}: alsoIn examId {ref.get('examId')!r} has no questions file")
         texitems.append({"where": f"{w} text", "html": q.get("text", "")})
+        if q.get("stem"): texitems.append({"where": f"{w} stem", "html": q["stem"]})
         if q.get("hint"): texitems.append({"where": f"{w} hint", "html": q["hint"]})
         if "hintReviewed" in q and not (q.get("hint") and isinstance(q["hintReviewed"], str)
                                         and re.fullmatch(r"\d{4}-\d{2}-\d{2}", q["hintReviewed"])):
@@ -107,7 +108,7 @@ def check_file(path, errors, texitems, seen_ids):
             if not isinstance(s.get("steps"), list) or not s["steps"]: errors.append(f"{w}: solution.steps must be a non-empty list")
             for j, st in enumerate(s.get("steps") or []): texitems.append({"where": f"{w} step {j}", "html": st})
             if s.get("answer"): texitems.append({"where": f"{w} answer", "html": s["answer"]})
-        for tagcheck in [q.get("text", ""), q.get("hint", "")] + (s.get("steps", []) if isinstance(s, dict) else []):
+        for tagcheck in [q.get("text", ""), q.get("stem", ""), q.get("hint", "")] + (s.get("steps", []) if isinstance(s, dict) else []):
             if re.search(r"<(?!/?(b|i|br|ul|ol|li|p|table|tr|td|th|sub|sup|span)\b)[a-z]", tagcheck or ""):
                 errors.append(f"{w}: disallowed HTML tag")
                 break

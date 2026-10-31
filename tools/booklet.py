@@ -67,9 +67,28 @@ def image_tag(q):
     return f'<img src="{src}" alt="">'
 
 
+_last = {"key": None, "stem": []}
+
+
 def question_html(number, points, q):
-    pts = f" ({fmt_points(points)} נק׳)" if points else ""
-    out = [f'<section class="q"><h3>שאלה {html.escape(number)}{pts}</h3><div class="text">{q["text"]}</div>', image_tag(q)]
+    """Sub-parts of one question are printed as on the form: the heading, data and figure once, then each part,
+    with the data that the form gives between parts (the new lines of each part's stem) just before that part."""
+    if not q.get("stem"):
+        _last["key"] = None
+        pts = f" ({fmt_points(points)} נק׳)" if points else ""
+        out = [f'<section class="q"><h3>שאלה {html.escape(number)}{pts}</h3><div class="text">{q["text"]}</div>', image_tag(q)]
+    else:
+        base = re.sub(r"[א-ת]\d*$", "", number)
+        key = (q["id"].rsplit("-q", 1)[0], base)
+        lines = q["stem"].split("<br>")
+        if key != _last["key"]:
+            pts = f" ({fmt_points(q['questionPoints'])} נק׳)" if q.get("questionPoints") else ""
+            out = [f'<section class="q"><h3>שאלה {html.escape(base)}{pts}</h3><div class="text">{q["stem"]}</div>', image_tag(q)]
+        else:
+            new = lines[len(_last["stem"]):] if lines[:len(_last["stem"])] == _last["stem"] else lines
+            out = ['<section class="q part">' + (f'<div class="text">{"<br>".join(new)}</div>' if new else "")]
+        out.append(f'<div class="text">{q["text"]}</div>')
+        _last.update(key=key, stem=lines)
     if q["type"] == "mc":
         out.append('<ol class="options">' + "".join(
             f'<li><span class="letter">{LETTERS[i]}.</span><span>{o}</span></li>' for i, o in enumerate(q["options"])) + "</ol>")
@@ -118,6 +137,7 @@ h2.exam { font-size: 15pt; margin: 0 0 4mm; padding-bottom: 1.5mm; border-bottom
 .to-q { font-size: 10pt; color: #5b6678; margin: -2mm 0 3mm; }
 .to-q a, .to-sol a { color: #2348a8; font-weight: 700; text-decoration: none; }
 .q { break-inside: avoid; margin: 0 0 5mm; }
+.q.part { margin-top: -3mm; }
 .q h3 { font-size: 11.5pt; margin: 0 0 1mm; }
 .off-note { font-size: 9.5pt; font-style: italic; color: #555; margin: 1mm 0 0; }
 .off-syllabus { font-style: italic; color: #555; }

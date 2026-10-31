@@ -274,6 +274,13 @@ select:disabled { opacity: 0.55; }
 .source small { font-size: var(--step--1); font-weight: 600; color: var(--muted); margin-inline-start: 8px; }
 .also { margin: -8px 0 0; font-size: var(--step--1); color: var(--muted); }
 .q-text { overflow-wrap: anywhere; }
+/* Sub-parts: the question's data above the part, and the earlier parts folded away */
+.q-stem { justify-self: stretch; overflow-wrap: anywhere; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 8px 12px; }
+.q-stem::before { content: "נתוני השאלה"; display: block; font-size: var(--step--1); font-weight: 700; color: var(--muted); }
+.q-stem.more::before { content: "נתונים נוספים לסעיף זה"; }
+.prev-parts { font-size: var(--step--1); color: var(--muted); }
+.prev-parts summary { cursor: pointer; font-weight: 600; color: var(--accent); }
+.prev-parts div { padding: 4px 12px 0; overflow-wrap: anywhere; }
 .q-text p { margin: 0 0 0.5em; }
 .q img { max-width: 100%; height: auto; border: 1px solid var(--line); border-radius: 6px; background: #fff; justify-self: start; }
 .options { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
@@ -484,7 +491,7 @@ const EXAMS = Object.fromEntries(DATA.exams.map(e => [e.examId, e]));
 const QUESTIONS = DATA.questions;
 const TOPICS = DATA.taxonomy.topics;
 const LETTERS = ["א", "ב", "ג", "ד", "ה", "ו", "ז", "ח", "ט", "י"];
-const PAGE = 15;
+const PAGE = 25;
 
 const topicSel = document.getElementById("topic");
 const subSel = document.getElementById("sub");
@@ -698,19 +705,46 @@ function showRandom() {
 }
 
 // `at` is the appearance shown in the card's heading (another exam the question appeared in, in the exam view).
-function card(q, at = appearances(q)[0]) {
+// The sub-parts of each question, in order: a sub-part card can show the parts before it.
+const baseNum = n => n.replace(/[א-ת]\d*$/, "");
+const SIBLINGS = new Map();
+QUESTIONS.filter(q => q.stem).forEach(q => {
+  const k = q.examId + "|" + baseNum(q.number);
+  if (!SIBLINGS.has(k)) SIBLINGS.set(k, []);
+  SIBLINGS.get(k).push(q);
+});
+SIBLINGS.forEach(v => v.sort((a, b) => a.number.localeCompare(b.number, "he", { numeric: true })));
+
+// prevStem: in an exam view, the stem of the part shown just before, so only the new data is repeated.
+function card(q, at = appearances(q)[0], prevStem = null) {
   const ex = EXAMS[at.examId];
   const others = appearances(q).filter(a => a.examId !== at.examId);
   const c = el("article", "q");
   const meta = el("div", "meta");
   meta.append(el("span", "chip", q.topic), el("span", "chip sub", q.sub));
   c.append(meta);
-  const pts = at.points ? ` · ${fmtPoints(at.points)} נק׳` : "";
+  const pts = at.points ? ` · ${fmtPoints(at.points)} נק׳`
+    : q.questionPoints ? ` · מתוך שאלה של ${fmtPoints(q.questionPoints)} נק׳` : "";
   c.append(el("h2", "source", `${examLabel(ex)}<small>שאלה ${at.number}${pts}</small>`));
   if (others.length) c.append(el("p", "also", "השאלה הופיעה גם ב: " +
     others.map(r => `${examLabel(EXAMS[r.examId])} (שאלה ${r.number})`).join("; ")));
+  const cont = q.stem && prevStem !== null && q.stem.startsWith(prevStem);
+  if (q.stem && !cont) {
+    c.append(el("div", "q-stem", q.stem));
+    const before = (SIBLINGS.get(q.examId + "|" + baseNum(q.number)) || []).filter(o => o !== q &&
+      o.number.localeCompare(q.number, "he", { numeric: true }) < 0);
+    if (before.length && prevStem === null) {
+      const d = el("details", "prev-parts");
+      d.append(el("summary", "", `הסעיפים הקודמים בשאלה (${before.map(o => o.number.slice(-1)).join(", ")})`));
+      before.forEach(o => d.append(el("div", "", o.text)));
+      d.addEventListener("toggle", () => typeset(d), { once: true });
+      c.append(d);
+    }
+  } else if (cont && q.stem.length > prevStem.length) {
+    c.append(el("div", "q-stem more", q.stem.slice(prevStem.length).replace(/^<br>/, "")));
+  }
   c.append(el("div", "q-text", q.text));
-  if (q.image) {
+  if (q.image && !cont) {
     const img = el("img");
     img.src = DATA.images[q.image]; img.alt = "איור מתוך השאלה"; img.loading = "lazy";
     c.append(img);
@@ -829,7 +863,7 @@ function card(q, at = appearances(q)[0]) {
 function renderList(items, byExam) {
   const list = el("div", "list");
   main.replaceChildren(list);
-  let shown = 0, lastExam = null;
+  let shown = 0, lastExam = null, lastStem = null, lastKey = null;
   const more = el("button", "btn more");
   more.type = "button";
   function page() {
@@ -839,7 +873,11 @@ function renderList(items, byExam) {
         lastExam = matchOf(q).examId;
         chunk.append(el("h2", "exam-head", examLabel(EXAMS[lastExam])));
       }
-      chunk.append(byExam ? card(q, matchOf(q)) : card(q));
+      // Consecutive parts of one question in an exam: repeat only the data that is new for this part.
+      const key = q.examId + "|" + baseNum(q.number);
+      const prev = byExam && q.stem && key === lastKey ? lastStem : null;
+      chunk.append(byExam ? card(q, matchOf(q), prev) : card(q));
+      lastKey = key; lastStem = q.stem || null;
     });
     shown = Math.min(items.length, shown + PAGE);
     list.append(chunk);
