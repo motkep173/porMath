@@ -708,7 +708,9 @@ function showRandom() {
 // The sub-parts of each question, in order: a sub-part card can show the parts before it.
 const baseNum = n => n.replace(/[א-ת]\d*$/, "");
 const SIBLINGS = new Map();
-QUESTIONS.filter(q => q.stem).forEach(q => {
+// A part card has a stem (possibly empty, when the question opens with part א).
+const isPart = q => q.stem !== undefined;
+QUESTIONS.filter(isPart).forEach(q => {
   const k = q.examId + "|" + baseNum(q.number);
   if (!SIBLINGS.has(k)) SIBLINGS.set(k, []);
   SIBLINGS.get(k).push(q);
@@ -728,9 +730,9 @@ function card(q, at = appearances(q)[0], prevStem = null) {
   c.append(el("h2", "source", `${examLabel(ex)}<small>שאלה ${at.number}${pts}</small>`));
   if (others.length) c.append(el("p", "also", "השאלה הופיעה גם ב: " +
     others.map(r => `${examLabel(EXAMS[r.examId])} (שאלה ${r.number})`).join("; ")));
-  const cont = q.stem && prevStem !== null && q.stem.startsWith(prevStem);
-  if (q.stem && !cont) {
-    c.append(el("div", "q-stem", q.stem));
+  const cont = isPart(q) && prevStem !== null && q.stem.startsWith(prevStem);
+  if (isPart(q) && !cont) {
+    if (q.stem) c.append(el("div", "q-stem", q.stem));
     const before = (SIBLINGS.get(q.examId + "|" + baseNum(q.number)) || []).filter(o => o !== q &&
       o.number.localeCompare(q.number, "he", { numeric: true }) < 0);
     if (before.length && prevStem === null) {
@@ -875,9 +877,9 @@ function renderList(items, byExam) {
       }
       // Consecutive parts of one question in an exam: repeat only the data that is new for this part.
       const key = q.examId + "|" + baseNum(q.number);
-      const prev = byExam && q.stem && key === lastKey ? lastStem : null;
+      const prev = byExam && isPart(q) && key === lastKey ? lastStem : null;
       chunk.append(byExam ? card(q, matchOf(q), prev) : card(q));
-      lastKey = key; lastStem = q.stem || null;
+      lastKey = key; lastStem = isPart(q) ? q.stem : null;
     });
     shown = Math.min(items.length, shown + PAGE);
     list.append(chunk);

@@ -73,17 +73,17 @@ _last = {"key": None, "stem": []}
 def question_html(number, points, q):
     """Sub-parts of one question are printed as on the form: the heading, data and figure once, then each part,
     with the data that the form gives between parts (the new lines of each part's stem) just before that part."""
-    if not q.get("stem"):
+    if "stem" not in q:
         _last["key"] = None
         pts = f" ({fmt_points(points)} נק׳)" if points else ""
         out = [f'<section class="q"><h3>שאלה {html.escape(number)}{pts}</h3><div class="text">{q["text"]}</div>', image_tag(q)]
     else:
         base = re.sub(r"[א-ת]\d*$", "", number)
         key = (q["id"].rsplit("-q", 1)[0], base)
-        lines = q["stem"].split("<br>")
+        lines = q["stem"].split("<br>") if q["stem"] else []
         if key != _last["key"]:
             pts = f" ({fmt_points(q['questionPoints'])} נק׳)" if q.get("questionPoints") else ""
-            out = [f'<section class="q"><h3>שאלה {html.escape(base)}{pts}</h3><div class="text">{q["stem"]}</div>', image_tag(q)]
+            out = [f'<section class="q"><h3>שאלה {html.escape(base)}{pts}</h3>' + (f'<div class="text">{q["stem"]}</div>' if q["stem"] else ""), image_tag(q)]
         else:
             new = lines[len(_last["stem"]):] if lines[:len(_last["stem"])] == _last["stem"] else lines
             out = ['<section class="q part">' + (f'<div class="text">{"<br>".join(new)}</div>' if new else "")]
