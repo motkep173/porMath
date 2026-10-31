@@ -60,7 +60,7 @@ def main():
     taxonomy["topics"] = [t for t in taxonomy["topics"] if t["subs"]]
 
     payload = json.dumps({
-        "taxonomy": taxonomy,
+        "taxonomy": taxonomy, "groups": course.get("groups", []),
         "exams": exams, "questions": questions, "images": images,
     }, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
 

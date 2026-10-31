@@ -4,5 +4,31 @@
  "courseName": "מבחני בגרות במתמטיקה, 4 ו־5 יחידות לימוד",
  "courseNumber": "",
  "logo": "",
- "bookletTitle": "מתמטיקה עם פורת – חוברת מבחנים להכנה לבגרות"
+ "bookletTitle": "מתמטיקה עם פורת – חוברת מבחנים להכנה לבגרות",
+ "groups": [
+  {
+   "questionnaire": "035571",
+   "grade": "כיתה יא",
+   "units": 5,
+   "label": "שאלון 035571"
+  },
+  {
+   "questionnaire": "035582",
+   "grade": "כיתה יב",
+   "units": 5,
+   "label": "שאלון 035582"
+  },
+  {
+   "questionnaire": "035481",
+   "grade": "כיתה יא",
+   "units": 4,
+   "label": "שאלון 035481"
+  },
+  {
+   "questionnaire": "035482",
+   "grade": "כיתה יב",
+   "units": 4,
+   "label": "שאלון 035482"
+  }
+ ]
 }

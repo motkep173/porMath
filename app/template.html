@@ -229,6 +229,23 @@ select:disabled { opacity: 0.55; }
 .sub-link[disabled] { opacity: 0.5; cursor: default; }
 .sub-link.all-done { border-color: var(--brand-bright); }
 
+/* "What do you study?": the first choice, before any topic. One card per class and questionnaire. */
+.who { display: grid; gap: 14px; background: var(--sheet); border: 1px solid var(--line); border-radius: 12px; padding: 20px; }
+.who h2 { margin: 0; font-size: var(--step-1); }
+.who p { margin: 0; color: var(--muted); }
+.who-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 560px) { .who-grid { grid-template-columns: 1fr; } }
+.who-card { all: unset; box-sizing: border-box; cursor: pointer; display: grid; gap: 2px; padding: 14px 16px; border: 1px solid var(--line);
+  border-inline-start: 4px solid var(--brand-bright); border-radius: 10px; background: var(--paper); }
+.who-card:hover, .who-card:focus-visible { border-color: var(--brand); background: var(--brand-soft); }
+.who-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.who-card b { font-size: var(--step-1); }
+.who-card span { color: var(--muted); font-size: var(--step--1); }
+.who-card small { color: var(--brand); font-weight: 700; font-size: var(--step--1); font-variant-numeric: tabular-nums; }
+.group-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; padding: 8px 14px; border-radius: 10px;
+  background: var(--brand-soft); border: 1px solid var(--line); font-size: var(--step--1); }
+.group-bar strong { color: var(--brand); font-size: var(--step-0); }
+
 /* Quick links to the latest exams, above the topic map */
 .recent { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: var(--step--1); margin-bottom: 4px; }
 .exam-tip { margin: 0 0 6px; font-size: var(--step--1); color: var(--muted); }
@@ -339,7 +356,8 @@ mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width:
     <details class="how">
       <summary>איך זה עובד?</summary>
       <ul>
-        <li>לחיצה על נושא או על תת־נושא מציגה את כל השאלות עליו, מכל המבחנים.</li>
+        <li>קודם בוחרים כיתה ושאלון. האתר יציג רק את המבחנים והנושאים שלכם, ואפשר להחליף ב<span class="key">החלפה</span> שבראש העמוד.</li>
+        <li>לחיצה על נושא או על תת־נושא מציגה את כל השאלות עליו, מכל המבחנים של השאלון שבחרתם.</li>
         <li>נסו לפתור לבד, ורק אז לחצו על <span class="key">הצג פתרון</span>. הפתרון נפתח שורה אחר שורה, כדי שתוכלו לנסות להמשיך לבד אחרי כל שלב. בחלק מהשאלות יש גם <span class="key">קבלת רמז</span>.</li>
         <li><span class="key">סימנתי כפתורה</span> שומר את ההתקדמות שלכם בדפדפן הזה, והיא מוצגת בכל נושא. במחשב או בטלפון אחר ההתקדמות לא מופיעה.</li>
         <li>כדי לפתוח מבחן שלם, בחרו אותו ברשימה <span class="key">מבחן</span> ב<span class="key">סינון שאלות</span>, או לחצו על אחד המבחנים האחרונים בעמוד הראשי.</li>
@@ -347,7 +365,18 @@ mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width:
     </details>
   </div>
 
-  <div class="layout">
+  <section class="who" id="who" hidden aria-labelledby="who-title">
+    <h2 id="who-title">מה אתם לומדים?</h2>
+    <p>בחרו כיתה ושאלון, ונציג רק את המבחנים והנושאים שלכם. אפשר להחליף בכל רגע.</p>
+    <div class="who-grid" id="who-grid"></div>
+    <div><button class="link-btn" id="who-all" type="button">הצגת כל המאגר</button></div>
+  </section>
+  <div class="group-bar" id="group-bar" hidden>
+    <span>מוצג עבור:</span> <strong id="group-name"></strong>
+    <button class="link-btn" id="group-change" type="button">החלפה</button>
+  </div>
+
+  <div class="layout" id="layout">
   <aside class="side" id="side" aria-label="חיפוש, סינון וכלים">
   <button class="side-toggle" id="hide-side" type="button" aria-controls="side" aria-expanded="true">
     הסתרת הסרגל
@@ -360,7 +389,6 @@ mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width:
 
   <div class="actions">
       <button class="btn random-btn" id="random" type="button">שאלה אקראית</button>
-      <a class="btn download" href="booklet.pdf" download="{{BOOKLET_TITLE}}.pdf">הורדת חוברת המבחנים (PDF)</a>
     </div>
 
   <details class="filters" id="filters">
@@ -395,7 +423,7 @@ mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width:
         <option value="מבחנים שלי">המבחנים שלנו</option>
       </select>
     </div>
-    <div class="field">
+    <div class="field" hidden>
       <label for="questionnaire">שאלון</label>
       <select id="questionnaire"></select>
     </div>
@@ -406,6 +434,9 @@ mjx-container[display="true"] { overflow-x: auto; overflow-y: hidden; max-width:
     </div>
   </details>
 
+  <div class="actions">
+    <a class="btn download" href="booklet.pdf" download="{{BOOKLET_TITLE}}.pdf">הורדת חוברת המבחנים (PDF)</a>
+  </div>
   </aside>
 
   <div class="content">
@@ -579,7 +610,7 @@ function renderMap() {
   tip.append(toFilters, ".");
   view.push(tip);
   // Straight to the questions that already have a full solution.
-  const nSol = QUESTIONS.filter(q => q.solution).length;
+  const nSol = pool.filter(q => q.solution).length;
   if (nSol && !typeSel.value) {
     const solTip = el("p", "exam-tip", `יש באתר פתרונות מלאים ל־${nSol} שאלות. `);
     const toSol = el("button", "link-btn", "הצגת השאלות עם פתרון בלבד");
@@ -589,7 +620,7 @@ function renderMap() {
     view.push(solTip);
   }
   // Quick links to the latest exams (not our own collections): each one selects that exam.
-  const recent = DATA.exams.filter(e => e.category !== "מבחנים שלי")
+  const recent = DATA.exams.filter(e => e.category !== "מבחנים שלי" && (!qnSel.value || e.questionnaire === qnSel.value))
     .sort((x, y) => examRank(y) - examRank(x)).slice(0, 4);
   if (recent.length) {
     const row = el("div", "recent", "<span>מבחנים אחרונים:</span>");
@@ -597,7 +628,7 @@ function renderMap() {
       const b = el("button", "btn", examLabel(e));
       b.type = "button";
       b.addEventListener("click", () => {
-        yearSel.value = ""; catSel.value = ""; qnSel.value = ""; fillExams(); examSel.value = e.examId; render();
+        yearSel.value = ""; catSel.value = ""; fillExams(); examSel.value = e.examId; render();
         main.scrollIntoView({ behavior: "smooth" });
       });
       row.append(b);
@@ -629,10 +660,10 @@ function renderMap() {
     const subs = el("div", "subs");
     t.subs.forEach(s => {
       const inSub = inTopic.filter(q => q.sub === s), n = inSub.length;
+      if (!n) return;  // not in the chosen group's exams
       const b = el("button", "sub-link", `${s} <b>${n}</b>`);
       b.type = "button";
-      if (!n) b.disabled = true;
-      else if (inSub.every(q => solved.has(q.id))) { b.classList.add("all-done"); b.title = "פתרתם את כל השאלות"; }
+      if (inSub.every(q => solved.has(q.id))) { b.classList.add("all-done"); b.title = "פתרתם את כל השאלות"; }
       b.addEventListener("click", () => { topicSel.value = t.name; fillSubs(); subSel.value = s; render(); });
       subs.append(b);
     });
@@ -825,12 +856,12 @@ function render() {
   const topic = topicSel.value, sub = subSel.value;
   const words = fold(searchInput.value.trim()).split(" ").filter(Boolean);
   // With a year, type of exam, questionnaire, exam or "with solution" but no topic or search, list by exam in the original question order.
-  const byExam = !topic && !words.length && (yearSel.value || catSel.value || qnSel.value || examSel.value || typeSel.value);
+  const byExam = !topic && !words.length && (yearSel.value || catSel.value || examSel.value || typeSel.value);
   document.getElementById("order-note").textContent = byExam
     ? "השאלות מסודרות לפי סדר הופעתן בבחינה."
     : "השאלות מסודרות לפי החומר המתמטי ולא לפי סדר הופעתן בבחינה.";
   homeBtn.hidden = !topic && !byExam && !words.length;
-  const nActive = [topicSel, subSel, typeSel, yearSel, catSel, qnSel, examSel].filter(x => x.value).length;
+  const nActive = [topicSel, subSel, typeSel, yearSel, catSel, examSel].filter(x => x.value).length;
   document.getElementById("active-count").textContent = nActive ? `${nActive} פעילים` : "";
   document.getElementById("clear").hidden = !nActive;
   statusBar.hidden = !topic && !byExam && !words.length;
@@ -864,11 +895,11 @@ examSel.addEventListener("change", () => {
 typeSel.addEventListener("change", render);
 yearSel.addEventListener("change", render);
 catSel.addEventListener("change", () => { fillExams(); render(); });
-qnSel.addEventListener("change", () => { fillExams(); render(); });
+qnSel.addEventListener("change", () => { setGroup(qnSel.value, true); render(); });
 let searchTimer;
 searchInput.addEventListener("input", () => { clearTimeout(searchTimer); searchTimer = setTimeout(render, 200); });
 function clearFilters() {
-  searchInput.value = ""; topicSel.value = ""; examSel.value = ""; typeSel.value = ""; yearSel.value = ""; catSel.value = ""; qnSel.value = ""; fillExams(); fillSubs(); render();
+  searchInput.value = ""; topicSel.value = ""; examSel.value = ""; typeSel.value = ""; yearSel.value = ""; catSel.value = ""; fillExams(); fillSubs(); render();
 }
 // The clear button sits in the summary line: don't let the click also fold the panel.
 document.getElementById("clear").addEventListener("click", e => { e.preventDefault(); clearFilters(); });
@@ -881,11 +912,46 @@ if (matchMedia("(min-width: 1100px)").matches) document.getElementById("filters"
 function openFromHash() {
   const id = decodeURIComponent(location.hash.slice(1));
   if (!EXAMS[id]) return false;
-  searchInput.value = ""; topicSel.value = ""; typeSel.value = ""; yearSel.value = ""; catSel.value = ""; qnSel.value = "";
-  fillExams(); fillSubs(); examSel.value = id;
+  searchInput.value = ""; topicSel.value = ""; typeSel.value = ""; yearSel.value = ""; catSel.value = "";
+  setGroup(EXAMS[id].questionnaire, false); fillSubs(); examSel.value = id;
   return true;
 }
-openFromHash();
+// The group (class and questionnaire) is chosen first and remembered in this browser; "*" means the whole bank.
+const GROUP_KEY = "examsbank-{{COURSE_NUMBER}}-group";
+const groupOf = q => DATA.groups.find(g => g.questionnaire === q);
+function groupName(q) {
+  const g = groupOf(q);
+  return g ? `${g.grade} · ${g.units} יחידות · ${g.label}` : "כל המאגר";
+}
+function setGroup(q, remember) {
+  qnSel.value = q || "";
+  if (remember) { try { localStorage.setItem(GROUP_KEY, q || "*"); } catch {} }
+  document.getElementById("group-name").textContent = groupName(qnSel.value);
+  document.getElementById("who").hidden = true;
+  document.getElementById("group-bar").hidden = false;
+  document.getElementById("layout").hidden = false;
+  examSel.value = ""; fillExams();
+}
+function askGroup() {
+  document.getElementById("who").hidden = false;
+  document.getElementById("group-bar").hidden = true;
+  document.getElementById("layout").hidden = true;
+}
+document.getElementById("who-grid").append(...DATA.groups.map(g => {
+  const n = DATA.exams.filter(e => e.questionnaire === g.questionnaire).length;
+  const b = el("button", "who-card", `<b>${g.grade} · ${g.units} יחידות</b><span>${g.label}</span><small>${n} מבחנים</small>`);
+  b.type = "button";
+  b.addEventListener("click", () => { setGroup(g.questionnaire, true); clearFilters(); });
+  return b;
+}));
+document.getElementById("who-all").addEventListener("click", () => { setGroup("", true); clearFilters(); });
+document.getElementById("group-change").addEventListener("click", askGroup);
+if (!openFromHash()) {
+  let saved = null;
+  try { saved = localStorage.getItem(GROUP_KEY); } catch {}
+  if (saved === "*" || groupOf(saved)) setGroup(saved === "*" ? "" : saved, false);
+  else askGroup();
+}
 window.addEventListener("hashchange", () => { if (openFromHash()) render(); });
 
 // Hiding the sidebar (wide screens only) is remembered in this browser.
