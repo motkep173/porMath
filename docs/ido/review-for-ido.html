@@ -36,16 +36,29 @@ section { background: var(--sheet); border: 1px solid var(--line); border-radius
 h2 { margin: 0; font-size: var(--step-1); text-wrap: balance; }
 .why { margin: 0; color: var(--muted); font-size: var(--step--1); max-width: 65ch; }
 ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-li label { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; cursor: pointer; }
-li input { margin-top: 0.4em; width: 1.05rem; height: 1.05rem; accent-color: var(--done); }
+li { display: grid; gap: 6px; padding-bottom: 10px; border-bottom: 1px solid var(--line); }
+li:last-child { border-bottom: 0; padding-bottom: 0; }
+.num { color: var(--brand); }
+.ctl { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font-size: var(--step--1); }
+.ctl label { display: inline-flex; align-items: center; gap: 4px; cursor: pointer; }
+.ctl input { accent-color: var(--accent); }
+textarea { font: inherit; font-size: var(--step--1); color: var(--ink); background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 4px 8px; min-width: 0; flex: 1 1 14rem; resize: vertical; }
+li[data-v="ok"] { border-inline-start: 3px solid var(--done); padding-inline-start: 8px; }
+li[data-v="fix"] { border-inline-start: 3px solid var(--brand-bright); padding-inline-start: 8px; }
+.send { border-color: var(--brand-bright); }
+.send textarea { width: 100%; box-sizing: border-box; }
+.send-row { display: flex; flex-wrap: wrap; gap: 8px; }
+.send-row button { font: inherit; font-weight: 700; padding: 8px 16px; border-radius: 10px; border: 1px solid var(--accent); background: var(--sheet); color: var(--accent); cursor: pointer; }
+.send-row button.primary { background: var(--done); border-color: var(--done); color: #fff; }
+button:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+pre { white-space: pre-wrap; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 10px; font-size: var(--step--1); }
 li .txt { min-width: 0; }
-li.checked .txt { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--line); }
 a { color: var(--accent); font-weight: 600; }
 a:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 .id { font-size: var(--step--1); color: var(--muted); direction: ltr; unicode-bidi: isolate; }
 .tag { display: inline-block; font-size: 0.8rem; font-weight: 700; color: var(--brand); background: var(--brand-soft); border-radius: 999px; padding: 0 9px; margin-inline-end: 6px; }
 footer { color: var(--muted); font-size: var(--step--1); }
-@media print { body { background: #fff; } .wrap { max-width: none; padding-block: 0; } li { break-inside: avoid; } h2 { break-after: avoid; } a { color: inherit; } }
+@media print { .send, .ctl { display: none; } body { background: #fff; } .wrap { max-width: none; padding-block: 0; } li { break-inside: avoid; } h2 { break-after: avoid; } a { color: inherit; } }
 </style>
 </head>
 <body>
@@ -54,10 +67,24 @@ footer { color: var(--muted); font-size: var(--step--1); }
     <div class="school">מתמטיקה עם פורת</div>
     <h1>מה לבדוק במאגר המבחנים</h1>
     <p class="lead">כל 61 המבחנים מהדרייב כבר באתר. ברשימה הזו מרוכז מה שכדאי שמורה יבדוק לפני שהאתר עובר לתלמידים: החלטות על המבנה, קריאות לא ודאיות של הטפסים, ושינויים שנמצאו בחוברות המקובצות. כל קישור פותח את המבחן באתר: <a href="https://motkep173.github.io/porMath/" target="_blank" rel="noopener">motkep173.github.io/porMath</a>.</p>
+    <p class="lead">ליד כל סעיף מסמנים „מאשר” או „צריך תיקון”, ואפשר להוסיף הערה. בסוף הדף יש כפתור ששולח את כל ההערות למוטקה.</p>
     <div class="progress" id="progress"></div>
   </header>
   <main id="list"></main>
-  <footer>הסימונים נשמרים בדפדפן שבו פותחים את הקובץ, ורק בו. עודכן ב־31.10.2026.</footer>
+  <section class="send" aria-labelledby="send-title">
+    <h2 id="send-title">שליחת ההערות למוטקה</h2>
+    <p class="why">הסימונים נשמרים רק בדפדפן הזה. כשמסיימים (או באמצע), שולחים אותם בלחיצה אחת. אפשר לשלוח כמה פעמים.</p>
+    <label for="general" class="why">הערות כלליות</label>
+    <textarea id="general" rows="3" placeholder="כל מה שלא קשור לסעיף מסוים"></textarea>
+    <div class="send-row">
+      <button type="button" id="whatsapp" class="primary">שליחה בוואטסאפ</button>
+      <button type="button" id="copy">העתקת הסיכום</button>
+      <button type="button" id="download">שמירה כקובץ טקסט</button>
+    </div>
+    <p id="sent-msg" class="why" role="status"></p>
+    <pre id="summary-text" hidden></pre>
+  </section>
+  <footer>עודכן ב־31.10.2026.</footer>
 </div>
 
 <script>
@@ -108,33 +135,83 @@ const GROUPS = [
     `<span class="tag">פרסום</span>לפני שהאתר יוצא לתלמידים, להחליט אם הוא ציבורי (GitHub Pages) או פרטי. בחינות הבגרות מתפרסמות לציבור, אבל על מבחנים מבתי ספר אחרים צריך לבדוק שמותר לפרסם אותם.`,
   ]},
 ];
-let done = new Set();
-try { done = new Set(JSON.parse(localStorage.getItem("ido-review") || "[]")); } catch (e) {}
+// Each item: a verdict (ok / fix) and a free note, kept in this browser and sent as one text at the end.
+let state = {};
+try { state = JSON.parse(localStorage.getItem("ido-review-2") || "{}"); } catch (e) {}
+const save = () => { try { localStorage.setItem("ido-review-2", JSON.stringify(state)); } catch (e) {} };
+const plain = html => { const d = document.createElement("div"); d.innerHTML = html; d.querySelectorAll(".id, .tag").forEach(x => x.remove()); return d.textContent.replace(/\s+/g, " ").trim(); };
 const list = document.getElementById("list");
-let n = 0;
+const ITEMS = [];
 GROUPS.forEach((g, gi) => {
   const s = document.createElement("section");
   s.innerHTML = `<h2>${g.title}</h2>` + (g.why ? `<p class="why">${g.why}</p>` : "");
   const ul = document.createElement("ul");
   g.items.forEach((html, ii) => {
-    const key = `g${gi}-${ii}`, id = "c-" + key; n++;
+    const key = `g${gi}-${ii}`;
+    ITEMS.push({ key, group: g.title, text: plain(html), num: ITEMS.length + 1 });
+    const st = state[key] || (state[key] = { v: "", note: "" });
     const li = document.createElement("li");
-    li.innerHTML = `<label for="${id}"><input type="checkbox" id="${id}"><span class="txt">${html}</span></label>`;
-    const box = li.querySelector("input");
-    box.checked = done.has(key); li.classList.toggle("checked", box.checked);
-    box.addEventListener("change", () => {
-      box.checked ? done.add(key) : done.delete(key);
-      li.classList.toggle("checked", box.checked);
-      try { localStorage.setItem("ido-review", JSON.stringify([...done])); } catch (e) {}
-      progress();
+    li.innerHTML = `<div class="txt"><b class="num">${ITEMS.length}.</b> ${html}</div>
+      <div class="ctl" role="radiogroup" aria-label="החלטה לסעיף ${ITEMS.length}">
+        <label><input type="radio" name="v-${key}" value="ok"> מאשר</label>
+        <label><input type="radio" name="v-${key}" value="fix"> צריך תיקון</label>
+        <textarea id="n-${key}" rows="1" placeholder="הערה (לא חובה)"></textarea>
+      </div>`;
+    li.querySelectorAll("input").forEach(r => {
+      r.checked = st.v === r.value;
+      r.addEventListener("change", () => { st.v = r.value; li.dataset.v = r.value; save(); progress(); });
     });
+    li.dataset.v = st.v;
+    const ta = li.querySelector("textarea");
+    ta.value = st.note;
+    ta.addEventListener("input", () => { st.note = ta.value; save(); });
     ul.append(li);
   });
   s.append(ul); list.append(s);
 });
 list.style.display = "grid"; list.style.gap = "16px";
-function progress() { document.getElementById("progress").textContent = `נבדקו ${done.size} מתוך ${n} סעיפים`; }
+function progress() {
+  const n = ITEMS.filter(i => state[i.key].v).length;
+  document.getElementById("progress").textContent = `נבדקו ${n} מתוך ${ITEMS.length} סעיפים`;
+}
 progress();
+
+// The summary that goes back to Motke: every item with a verdict or a note, grouped as on the page.
+function summary() {
+  const out = ["הערות של עידו על מאגר המבחנים (" + new Date().toLocaleDateString("he-IL") + ")"];
+  let group = null, any = false;
+  ITEMS.forEach(i => {
+    const st = state[i.key];
+    if (!st.v && !st.note.trim()) return;
+    if (i.group !== group) { group = i.group; out.push("", "■ " + group); }
+    const verdict = st.v === "ok" ? "✔ מאשר" : st.v === "fix" ? "✘ צריך תיקון" : "• הערה";
+    out.push(`${i.num}. ${verdict}: ${i.text.slice(0, 120)}${i.text.length > 120 ? "…" : ""}`);
+    if (st.note.trim()) out.push("   הערה: " + st.note.trim());
+    any = true;
+  });
+  const general = document.getElementById("general").value.trim();
+  if (general) out.push("", "■ הערות כלליות", general);
+  if (!any && !general) out.push("(עוד לא סומן שום סעיף)");
+  return out.join("\n");
+}
+const ta = document.getElementById("general");
+try { ta.value = localStorage.getItem("ido-review-general") || ""; } catch (e) {}
+ta.addEventListener("input", () => { try { localStorage.setItem("ido-review-general", ta.value); } catch (e) {} });
+const msg = document.getElementById("sent-msg");
+document.getElementById("copy").addEventListener("click", async () => {
+  const t = summary();
+  try { await navigator.clipboard.writeText(t); msg.textContent = "הסיכום הועתק. הדביקו אותו בהודעה למוטקה (וואטסאפ או מייל)."; }
+  catch (e) { const pre = document.getElementById("summary-text"); pre.hidden = false; pre.textContent = t; msg.textContent = "לא הצלחתי להעתיק אוטומטית. סמנו את הטקסט שלמטה והעתיקו אותו."; }
+});
+document.getElementById("whatsapp").addEventListener("click", () => {
+  window.open("https://wa.me/?text=" + encodeURIComponent(summary()), "_blank", "noopener");
+});
+document.getElementById("download").addEventListener("click", () => {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([summary()], { type: "text/plain;charset=utf-8" }));
+  a.download = "הערות-עידו-מאגר-המבחנים.txt"; a.click();
+  msg.textContent = "הקובץ נשמר. אפשר לצרף אותו להודעה למוטקה.";
+});
 </script>
 </body>
 </html>
