@@ -53,7 +53,7 @@ footer { color: var(--muted); font-size: var(--step--1); }
   <header>
     <div class="school">מתמטיקה עם פורת</div>
     <h1>מה לבדוק במאגר המבחנים</h1>
-    <p class="lead">כל 61 המבחנים מהדרייב כבר באתר. ברשימה הזו מרוכז מה שכדאי שמורה יבדוק לפני שהאתר עובר לתלמידים: החלטות על המבנה, קריאות לא ודאיות של הטפסים, ושינויים שנמצאו בחוברות המקובצות. כל קישור פותח את המבחן באתר, בתנאי ששני הקבצים (הרשימה הזו ו־index.html) שמורים באותה תיקייה.</p>
+    <p class="lead">כל 61 המבחנים מהדרייב כבר באתר. ברשימה הזו מרוכז מה שכדאי שמורה יבדוק לפני שהאתר עובר לתלמידים: החלטות על המבנה, קריאות לא ודאיות של הטפסים, ושינויים שנמצאו בחוברות המקובצות. כל קישור פותח את המבחן באתר: <a href="https://motkep173.github.io/porMath/" target="_blank" rel="noopener">motkep173.github.io/porMath</a>.</p>
     <div class="progress" id="progress"></div>
   </header>
   <main id="list"></main>
@@ -61,7 +61,7 @@ footer { color: var(--muted); font-size: var(--step--1); }
 </div>
 
 <script>
-const SITE = "index.html#";
+const SITE = "https://motkep173.github.io/porMath/#";
 const ex = (id, label) => `<a href="${SITE}${id}" target="_blank" rel="noopener">${label}</a> <span class="id">${id}</span>`;
 const GROUPS = [
   { title: "החלטות כלליות על האתר", why: "כדאי להחליט עליהן לפני שמוסיפים פתרונות, כי הן משפיעות על כל המאגר.", items: [
