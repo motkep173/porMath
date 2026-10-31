@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>בדיקות לעידו</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Assistant:wght@400;600;700;800&display=swap">
+<style>
+/* Layout: one reading column of grouped checklists, the same look as the exam bank it reviews */
+:root {
+  --paper: #f6f8fb; --sheet: #ffffff; --ink: #1b2433; --muted: #5b6678; --line: #d9dfe8;
+  --accent: #2348a8; --brand: #b85400; --brand-bright: #f39200; --brand-soft: #fff1e0; --done: #2f7d4f;
+  --font: "Assistant", "Segoe UI", Arial, sans-serif;
+  --step--1: 0.9rem; --step-0: 1.05rem; --step-1: 1.3rem; --step-2: 1.75rem;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #12161e; --sheet: #1a202b; --ink: #e4e9f1; --muted: #9aa5b8; --line: #2d3545;
+    --accent: #8eaaf5; --brand: #ffb162; --brand-soft: #33251a; --done: #74c69d; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --paper: #12161e; --sheet: #1a202b; --ink: #e4e9f1; --muted: #9aa5b8; --line: #2d3545;
+  --accent: #8eaaf5; --brand: #ffb162; --brand-soft: #33251a; --done: #74c69d; color-scheme: dark;
+}
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font); font-size: var(--step-0); line-height: 1.6; }
+.wrap { max-width: 50rem; margin: 0 auto; padding-block: 28px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 22px; }
+header { display: grid; gap: 6px; border-bottom: 3px solid var(--brand-bright); padding-bottom: 14px; }
+.school { color: var(--brand); font-weight: 800; font-size: var(--step-1); }
+h1 { margin: 0; font-size: var(--step-2); line-height: 1.2; text-wrap: balance; }
+.lead { margin: 0; color: var(--muted); max-width: 65ch; }
+.progress { font-size: var(--step--1); color: var(--muted); font-variant-numeric: tabular-nums; }
+section { background: var(--sheet); border: 1px solid var(--line); border-radius: 12px; padding: 16px 18px; display: grid; gap: 10px; }
+h2 { margin: 0; font-size: var(--step-1); text-wrap: balance; }
+.why { margin: 0; color: var(--muted); font-size: var(--step--1); max-width: 65ch; }
+ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+li label { display: grid; grid-template-columns: auto 1fr; gap: 10px; align-items: start; cursor: pointer; }
+li input { margin-top: 0.4em; width: 1.05rem; height: 1.05rem; accent-color: var(--done); }
+li .txt { min-width: 0; }
+li.checked .txt { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--line); }
+a { color: var(--accent); font-weight: 600; }
+a:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.id { font-size: var(--step--1); color: var(--muted); direction: ltr; unicode-bidi: isolate; }
+.tag { display: inline-block; font-size: 0.8rem; font-weight: 700; color: var(--brand); background: var(--brand-soft); border-radius: 999px; padding: 0 9px; margin-inline-end: 6px; }
+footer { color: var(--muted); font-size: var(--step--1); }
+@media print { body { background: #fff; } .wrap { max-width: none; padding-block: 0; } li { break-inside: avoid; } h2 { break-after: avoid; } a { color: inherit; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="school">מתמטיקה עם פורת</div>
+    <h1>מה לבדוק במאגר המבחנים</h1>
+    <p class="lead">כל 61 המבחנים מהדרייב כבר באתר. ברשימה הזו מרוכז מה שכדאי שמורה יבדוק לפני שהאתר עובר לתלמידים: החלטות על המבנה, קריאות לא ודאיות של הטפסים, ושינויים שנמצאו בחוברות המקובצות. כל קישור פותח את המבחן באתר, בתנאי ששני הקבצים (הרשימה הזו ו־index.html) שמורים באותה תיקייה.</p>
+    <div class="progress" id="progress"></div>
+  </header>
+  <main id="list"></main>
+  <footer>הסימונים נשמרים בדפדפן שבו פותחים את הקובץ, ורק בו. עודכן ב־31.10.2026.</footer>
+</div>
+
+<script>
+const SITE = "index.html#";
+const ex = (id, label) => `<a href="${SITE}${id}" target="_blank" rel="noopener">${label}</a> <span class="id">${id}</span>`;
+const GROUPS = [
+  { title: "החלטות כלליות על האתר", why: "כדאי להחליט עליהן לפני שמוסיפים פתרונות, כי הן משפיעות על כל המאגר.", items: [
+    `<span class="tag">פתרונות</span>סגנון הפתרונות: הפתרון נפתח שורה אחר שורה, ויש רמזים בחלק מהשאלות. לעבור על ${ex("b571-2024-summer-a", "בגרות 035571 קיץ תשפ״ד מועד א׳")} ולהחליט אם להמשיך כך לשאר המבחנים.`,
+    `<span class="tag">נושאים</span>חלוקת הנושאים ותתי־הנושאים בעמוד הראשי של האתר. לבדוק שהשמות מוכרים לתלמידים ושאין נושא חסר. שינוי שם בהמשך מחייב לעבור על כל השאלות.`,
+    `<span class="tag">כרטיסים</span>בבגרות 5 יחידות שאלון ראשון, כל סעיף של שאלה 1 („שאלות קצרות”) הוא כרטיס נפרד. כל שאר השאלות, בכל השאלונים, הן כרטיס אחד עם כל הסעיפים. האם זה נוח לתרגול?`,
+    `<span class="tag">סיווג</span>שאלה שלמה מסווגת לפי הנושא העיקרי שלה. למשל, שאלות 3 בהסתברות כוללות גם חלק בינומי, אבל סווגו כ„הסתברות מותנית”. כדאי לדפדף בכמה נושאים ולתקן סיווגים שנראים לא נכונים.`,
+    `<span class="tag">נוסח</span>הנוסח הועתק כמו שהוא מודפס: לשון יחיד או רבים לפי הטופס, מילים עם קו תחתון מוצגות בהדגשה, ווקטורים עם קו תחתון כמו בטופס.`,
+  ]},
+  { title: "קריאות של הטופס שצריך לאמת", why: "מקומות שבהם הקריאה של הטופס לא הייתה ודאית. כדאי להשוות לטופס המקורי.", items: [
+    `${ex("b571-2024-summer-a", "035571 קיץ תשפ״ד א׳")}, שאלה 5ד: לפי הנתונים של סעיף ב, הזווית ABC יוצאת כ־118.7°, ולכן אי אפשר שבסעיף ד היא תהיה 90° אם נתון השטח עדיין בתוקף. הפתרון פותר את ד כמקרה נפרד, בלי נתון השטח. האם זו הכוונה?`,
+    `${ex("b571-2024-summer-a", "035571 קיץ תשפ״ד א׳")}, שאלה 1ב(2): הפתרון מניח שהענף השמאלי של הגרף עולה מעל e, כפי שנראה בשרטוט. ובשאלה 7א(4) נקודות הקצה (±π/2, 0) נספרו כנקודות קיצון.`,
+    `${ex("b571-2023-summer-special", "035571 קיץ תשפ״ג מועד מיוחד")}, שאלה 8: השיפוע נקרא כ־<span dir="ltr">−2</span>. לבדוק שהסימן נכון.`,
+    `${ex("b571-2023-summer-b", "035571 קיץ תשפ״ג מועד ב׳")}, שאלה 1ד: סדר הביטויים (1)–(4) נקבע לפי קריאה מימין לשמאל.`,
+    `${ex("b571-2024-summer-b", "035571 קיץ תשפ״ד מועד ב׳")}, שאלה 1ד(4): בטופס יש סוגר מיותר „(”. הוא הועתק כמו שהוא, עם הערה לתלמידים.`,
+    `${ex("b481-2025-winter", "035481 חורף תשפ״ה")}, שאלה 6: המעריך מטושטש בסריקה ונקרא כ־x². הנתון f(5)=9.2 מתאים לקריאה הזו.`,
+    `${ex("b481-2025-summer-b", "035481 קיץ תשפ״ה מועד ב׳")}, שאלה 3: המספרים 7, 11, 4, 6 מטושטשים בסריקה. הם מתאימים לתוצאה 8/35 שמופיעה בשאלה.`,
+  ]},
+  { title: "מועדים שלא כתובים בחוברות", why: "בחלק מהבחינות בחוברות המקובצות לא כתוב המועד, והוא הוסק מהסדר בחוברת.", items: [
+    `${ex("b482-2024-winter", "035482 חורף תשפ״ד")}, ${ex("b482-2024-summer-a", "קיץ תשפ״ד א׳")}, ${ex("b482-2024-summer-b", "קיץ תשפ״ד ב׳")}: שלוש הבחינות האחרונות בחוברת יב 4 (מבחנים 18–20) בלי שום כותרת. ייתכן שמבחן 20 הוא בכלל חורף תשפ״ה.`,
+    `בחינות שכתוב עליהן רק „קיץ”, ולכן הוגדרו כמועד א׳: ${ex("b482-2020-summer-a", "035482 קיץ תש״ף")}, ${ex("b482-2021-summer-a", "035482 קיץ תשפ״א")}, ${ex("b482-2022-summer-a", "035482 קיץ תשפ״ב")}, ${ex("b482-2023-summer-a", "035482 קיץ תשפ״ג")}, ${ex("b481-2023-summer-a", "035481 קיץ תשפ״ג")}, ${ex("b481-2024-summer-a", "035481 קיץ תשפ״ד")}, ${ex("b481-2025-summer-a", "035481 קיץ תשפ״ה")}.`,
+    `${ex("b482-2021-winter-late", "035482 „חורף מאוחר” תשפ״א")}: השם נלקח מהכותרת. האם לקרוא לו „מועד מיוחד”?`,
+    `בחוברות של 4 יחידות אין עמוד שער, ולכן בבחינות של 035481 לא מופיע ניקוד ולא מופיעה ההוראה „ענו על N מתוך M”.`,
+  ]},
+  { title: "שינויים שנמצאו בחוברת יא 4 יחידות", why: "נראה שמי שקיבץ את החוברות החליף או הוסיף שאלות. צריך לאשר שהשאלות שהוכנסו הן הנכונות.", items: [
+    `${ex("b481-2022-winter-nivtzarim", "035481 חורף תשפ״ב נבצרים")}: שאלה 3 חסרה, ובסוף המבחן יש שאלת הסתברות בגופן אחר (כיתה ורישיון נהיגה). היא הוכנסה כשאלה 3. גם שאלה 5 כמעט זהה לשאלה 5 ב־${ex("b481-2023-summer-special", "קיץ תשפ״ג מועד מיוחד")}.`,
+    `${ex("b481-2022-summer-b", "035481 קיץ תשפ״ב ב׳")}: שאלה 1 חסרה, ובאמצע המבחן יש שאלה בגופן אחר (יוסי וחבילות הממתקים). היא הוכנסה כשאלה 1.`,
+    `${ex("b481-2023-winter", "035481 חורף תשפ״ג")}: המבחן נפתח בשאלה 2. שאלה 1 מופיעה אחרי שאלה 8, בגופן אחר.`,
+    `${ex("b481-2022-winter", "035481 חורף תשפ״ב")} (רק בחוברת 2025fix): שאלה 1 בגופן אחר בתחתית עמוד, ושאלה 2 כמעט זהה לשאלה 1 של ${ex("b481-2023-summer-special", "קיץ תשפ״ג מועד מיוחד")}.`,
+    `${ex("b481-2023-summer-special", "035481 קיץ תשפ״ג מועד מיוחד")}: בשאלה 8 יש רק סעיפים א–ב. ייתכן שהיא קוצרה.`,
+    `${ex("b481-2026-winter", "035481 חורף תשפ״ו")}: אין שאלה 4. בשאלה 5 יש סעיף ד אחרי סעיף ה, והוא מזכיר „המשיק” בלי שהמשיק מוגדר בשאלה.`,
+    `${ex("b481-2021-summer-b", "035481 קיץ תשפ״א ב׳")}: המספר „2.” מופיע פעמיים. השאלה השנייה (קורונה) מוספרה כשאלה 3. ${ex("b481-2021-summer-special", "קיץ תשפ״א מועד מיוחד")}: המספור בחוברת הוא 1,2,1,4,5,6,7,6, והכפולים מוספרו מחדש כ־3 וכ־8.`,
+    `חוברת 2025fix היא גרסה ישנה של חוברת 2026: 10 מתוך 12 המבחנים בה מופיעים גם בחוברת 2026. נכנסו רק שני המבחנים שאין ב־2026. הנוסח של המבחנים המשותפים לא הושווה.`,
+  ]},
+  { title: "חוברת יב 4 יחידות", why: "", items: [
+    `${ex("b482-2020-winter", "035482 חורף תש״ף")}: שאלה 5 נגמרת בסעיף ב(3). ייתכן שחסרים בה סעיפים.`,
+    `${ex("b482-2021-summer-special", "035482 קיץ תשפ״א מועד מיוחד")}: בחוברת חסר העמוד המודפס 4. לפי התוכן לא נראה שחסרה שאלה.`,
+  ]},
+  { title: "5 יחידות: השאלות החלופיות", why: "", items: [
+    `${ex("own-571-swap-q8", "שאלות חלופיות לשאלה 8")}: שלוש השאלות מהקבצים „אחרי החלפה” נמצאות בקטגוריה „המבחנים שלנו”, והבחינות המקוריות נשארו כמו שהן. האם להציג גם את הבחינות המותאמות כמבחנים שלמים?`,
+  ]},
+  { title: "מה עוד חסר באתר", why: "", items: [
+    `<span class="tag">קטגוריה</span>מבחנים מבתי ספר (למשל קציר) ומבחנים שעידו כתב: אין כאלה בתיקייה בדרייב. כשיהיו קבצים, הם ייכנסו לקטגוריות שכבר קיימות באתר.`,
+    `<span class="tag">פרסום</span>לפני שהאתר יוצא לתלמידים, להחליט אם הוא ציבורי (GitHub Pages) או פרטי. בחינות הבגרות מתפרסמות לציבור, אבל על מבחנים מבתי ספר אחרים צריך לבדוק שמותר לפרסם אותם.`,
+  ]},
+];
+let done = new Set();
+try { done = new Set(JSON.parse(localStorage.getItem("ido-review") || "[]")); } catch (e) {}
+const list = document.getElementById("list");
+let n = 0;
+GROUPS.forEach((g, gi) => {
+  const s = document.createElement("section");
+  s.innerHTML = `<h2>${g.title}</h2>` + (g.why ? `<p class="why">${g.why}</p>` : "");
+  const ul = document.createElement("ul");
+  g.items.forEach((html, ii) => {
+    const key = `g${gi}-${ii}`, id = "c-" + key; n++;
+    const li = document.createElement("li");
+    li.innerHTML = `<label for="${id}"><input type="checkbox" id="${id}"><span class="txt">${html}</span></label>`;
+    const box = li.querySelector("input");
+    box.checked = done.has(key); li.classList.toggle("checked", box.checked);
+    box.addEventListener("change", () => {
+      box.checked ? done.add(key) : done.delete(key);
+      li.classList.toggle("checked", box.checked);
+      try { localStorage.setItem("ido-review", JSON.stringify([...done])); } catch (e) {}
+      progress();
+    });
+    ul.append(li);
+  });
+  s.append(ul); list.append(s);
+});
+list.style.display = "grid"; list.style.gap = "16px";
+function progress() { document.getElementById("progress").textContent = `נבדקו ${done.size} מתוך ${n} סעיפים`; }
+progress();
+</script>
+</body>
+</html>
